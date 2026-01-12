@@ -131,5 +131,6 @@ export interface PokemonState {
   error: string | null;
   page: number;
   hasMore: boolean;
+  total: number;
 }
 

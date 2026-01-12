@@ -14,7 +14,7 @@ export const fetchPokemonList = createAsyncThunk(
       throw new Error('Failed to fetch Pokemon list');
     }
     const data: PokemonListResponse = await response.json();
-    
+
     // Fetch detailed data for each Pokemon
     const detailedPokemons = await Promise.all(
       data.results.map(async (pokemon) => {
@@ -22,10 +22,12 @@ export const fetchPokemonList = createAsyncThunk(
         return detailResponse.json();
       })
     );
-    
+
     return {
       pokemons: detailedPokemons,
       hasMore: data.next !== null,
+      total: data.count,
+      page,
     };
   }
 );
@@ -63,6 +65,7 @@ const initialState: PokemonState = {
   error: null,
   page: 0,
   hasMore: true,
+  total: 0,
 };
 
 export const pokemonSlice = createSlice({
@@ -82,6 +85,7 @@ export const pokemonSlice = createSlice({
       state.pokemons = [];
       state.page = 0;
       state.hasMore = true;
+      state.total = 0;
     },
   },
   extraReducers: (builder) => {
@@ -93,8 +97,10 @@ export const pokemonSlice = createSlice({
       })
       .addCase(fetchPokemonList.fulfilled, (state, action) => {
         state.loading = false;
-        state.pokemons = [...state.pokemons, ...action.payload.pokemons];
+        state.pokemons = action.payload.pokemons;
         state.hasMore = action.payload.hasMore;
+        state.total = action.payload.total;
+        state.page = action.payload.page;
       })
       .addCase(fetchPokemonList.rejected, (state, action) => {
         state.loading = false;

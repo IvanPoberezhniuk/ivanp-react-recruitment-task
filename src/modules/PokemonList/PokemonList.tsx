@@ -1,33 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Typography,
   TextField,
   Box,
-  Button,
   CircularProgress,
   Alert,
   InputAdornment,
-  Paper,
   ToggleButtonGroup,
   ToggleButton,
-} from '@mui/material';
-import { SxProps, Theme } from '@mui/material/styles';
-import SearchIcon from '@mui/icons-material/Search';
-import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
-import GridViewIcon from '@mui/icons-material/GridView';
-import ViewListIcon from '@mui/icons-material/ViewList';
-import { useAppDispatch, useAppSelector } from '../../store';
+  Pagination,
+} from "@mui/material";
+import { SxProps, Theme } from "@mui/material/styles";
+import SearchIcon from "@mui/icons-material/Search";
+import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
+import GridViewIcon from "@mui/icons-material/GridView";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import { useAppDispatch, useAppSelector } from "../../store";
 import {
   fetchPokemonList,
   searchPokemon,
   resetPokemonList,
   clearError,
-} from '../../store/slices/pokemonSlice';
-import { PokemonCard } from '../PokemonCard/PokemonCard';
-import { PokemonCardList } from '../PokemonCard/PokemonCardList';
-import { Pokemon } from '../../types/pokemon.types';
+} from "../../store/slices/pokemonSlice";
+import { PokemonCard } from "../PokemonCard/PokemonCard";
+import { PokemonCardList } from "../PokemonCard/PokemonCardList";
+import { Pokemon } from "../../types/pokemon.types";
 
 // Styles constant
 const styles = {
@@ -36,21 +35,21 @@ const styles = {
   } as SxProps<Theme>,
 
   headerContainer: {
-    textAlign: 'center',
+    textAlign: "center",
     mb: 4,
   } as SxProps<Theme>,
 
   headerIconBox: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     gap: 2,
     mb: 2,
   } as SxProps<Theme>,
 
   headerIcon: {
     fontSize: 48,
-    color: 'primary.main',
+    color: "primary.main",
   } as SxProps<Theme>,
 
   headerTitle: {
@@ -67,31 +66,31 @@ const styles = {
   } as SxProps<Theme>,
 
   viewToggleContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
+    display: "flex",
+    justifyContent: "flex-end",
     mb: 3,
   } as SxProps<Theme>,
 
   gridContainer: {
-    display: 'grid',
+    display: "grid",
     gridTemplateColumns: {
-      xs: 'repeat(1, 1fr)',
-      sm: 'repeat(2, 1fr)',
-      md: 'repeat(3, 1fr)',
-      lg: 'repeat(5, 1fr)',
+      xs: "repeat(1, 1fr)",
+      sm: "repeat(2, 1fr)",
+      md: "repeat(3, 1fr)",
+      lg: "repeat(5, 1fr)",
     },
     gap: 3,
   } as SxProps<Theme>,
 
   listContainer: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(1, 1fr)',
+    display: "grid",
+    gridTemplateColumns: "repeat(1, 1fr)",
     gap: 3,
   } as SxProps<Theme>,
 
   loadingBox: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
     mt: 4,
   } as SxProps<Theme>,
 
@@ -99,36 +98,40 @@ const styles = {
     // CircularProgress size handled by component prop
   },
 
-  loadMoreBox: {
-    display: 'flex',
-    justifyContent: 'center',
+  paginationBox: {
+    display: "flex",
+    justifyContent: "center",
     mt: 4,
   } as SxProps<Theme>,
 
-  loadMoreButton: {
-    // Button props handled by component
-  },
-
   noResultsBox: {
-    textAlign: 'center',
+    textAlign: "center",
     py: 8,
   } as SxProps<Theme>,
 };
 
+const ITEMS_PER_PAGE = 20;
+
 export const PokemonList: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { pokemons, loading, error, page, hasMore } = useAppSelector((state) => state.pokemon);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const { pokemons, loading, error, page, total } = useAppSelector(
+    (state) => state.pokemon
+  );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
+    null
+  );
 
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>(() => {
-    const savedViewMode = localStorage.getItem('pokemonViewMode');
-    return (savedViewMode === 'grid' || savedViewMode === 'list') ? savedViewMode : 'grid';
+  const [viewMode, setViewMode] = useState<"grid" | "list">(() => {
+    const savedViewMode = localStorage.getItem("pokemonViewMode");
+    return savedViewMode === "grid" || savedViewMode === "list"
+      ? savedViewMode
+      : "grid";
   });
 
   useEffect(() => {
-    localStorage.setItem('pokemonViewMode', viewMode);
+    localStorage.setItem("pokemonViewMode", viewMode);
   }, [viewMode]);
 
   // Fetch initial Pokemon list
@@ -162,12 +165,16 @@ export const PokemonList: React.FC = () => {
     setSearchTimeout(timeout);
   };
 
-  // Handle load more
-  const handleLoadMore = () => {
-    if (!loading && hasMore) {
-      dispatch(fetchPokemonList(page + 1));
+  // Handle page change
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    if (!loading) {
+      dispatch(fetchPokemonList(value - 1));
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
+  // Calculate total pages
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   // Handle Pokemon card click
   const handlePokemonClick = (pokemon: Pokemon) => {
@@ -185,7 +192,12 @@ export const PokemonList: React.FC = () => {
       <Box sx={styles.headerContainer}>
         <Box sx={styles.headerIconBox}>
           <CatchingPokemonIcon sx={styles.headerIcon} />
-          <Typography variant="h2" component="h1" color="primary" sx={styles.headerTitle}>
+          <Typography
+            variant="h2"
+            component="h1"
+            color="primary"
+            sx={styles.headerTitle}
+          >
             Pokédex
           </Typography>
         </Box>
@@ -195,28 +207,30 @@ export const PokemonList: React.FC = () => {
       </Box>
 
       {/* Search Bar */}
-      <Paper elevation={2} sx={styles.searchPaper}>
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Search Pokemon by name..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon color="action" />
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
-      </Paper>
+      <TextField
+        fullWidth
+        variant="outlined"
+        placeholder="Search Pokemon by name..."
+        value={searchTerm}
+        onChange={handleSearchChange}
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon color="action" />
+              </InputAdornment>
+            ),
+          },
+        }}
+      />
 
       {/* Error Alert */}
       {error && (
-        <Alert severity="error" onClose={handleClearError} sx={styles.errorAlert}>
+        <Alert
+          severity="error"
+          onClose={handleClearError}
+          sx={styles.errorAlert}
+        >
           {error}
         </Alert>
       )}
@@ -245,10 +259,12 @@ export const PokemonList: React.FC = () => {
       </Box>
 
       {/* Pokemon Grid */}
-      <Box sx={viewMode === 'grid' ? styles.gridContainer : styles.listContainer}>
+      <Box
+        sx={viewMode === "grid" ? styles.gridContainer : styles.listContainer}
+      >
         {pokemons.map((pokemon) => (
           <Box key={pokemon.id}>
-            {viewMode === 'grid' ? (
+            {viewMode === "grid" ? (
               <PokemonCard pokemon={pokemon} onClick={handlePokemonClick} />
             ) : (
               <PokemonCardList pokemon={pokemon} onClick={handlePokemonClick} />
@@ -264,17 +280,20 @@ export const PokemonList: React.FC = () => {
         </Box>
       )}
 
-      {/* Load More Button */}
-      {!loading && hasMore && pokemons.length > 0 && (
-        <Box sx={styles.loadMoreBox}>
-          <Button
-            variant="contained"
+      {/* Pagination */}
+      {!loading && !searchTerm && pokemons.length > 0 && totalPages > 1 && (
+        <Box sx={styles.paginationBox}>
+          <Pagination
+            count={totalPages}
+            page={page + 1}
+            onChange={handlePageChange}
+            color="primary"
             size="large"
-            onClick={handleLoadMore}
-            startIcon={<CatchingPokemonIcon />}
-          >
-            Load More Pokemon
-          </Button>
+            showFirstButton
+            showLastButton
+            siblingCount={1}
+            boundaryCount={1}
+          />
         </Box>
       )}
 
@@ -289,4 +308,3 @@ export const PokemonList: React.FC = () => {
     </Container>
   );
 };
-
