@@ -1,21 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-
-const Homepage = () => {
-  return (
-    <div>
-      <h1>
-        Pokedex
-      </h1>
-    </div>
-  )
-}
+import { Box } from "@mui/material";
+import { PokemonList } from "../PokemonList/PokemonList";
 
 export const App = () => {
   return (
-    <div className="app">
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        <Route path="/" element={<PokemonList />} />
       </Routes>
-    </div>
+    </Box>
   );
 }
