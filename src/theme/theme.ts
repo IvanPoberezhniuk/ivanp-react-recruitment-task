@@ -103,7 +103,7 @@ export const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 32,
           padding: '8px 24px',
           fontSize: '1rem',
         },
@@ -121,17 +121,13 @@ export const theme = createTheme({
           borderRadius: 16,
           boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
           transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-          '&:hover': {
-            transform: 'translateY(-4px)',
-            boxShadow: '0 8px 16px rgba(0,0,0,0.15)',
-          },
         },
       },
     },
     MuiChip: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 16,
           fontWeight: 500,
         },
       },
@@ -140,7 +136,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            borderRadius: 8,
+            borderRadius: 32,
           },
         },
       },
