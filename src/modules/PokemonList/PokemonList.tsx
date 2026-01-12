@@ -122,7 +122,15 @@ export const PokemonList: React.FC = () => {
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>(() => {
+    const savedViewMode = localStorage.getItem('pokemonViewMode');
+    return (savedViewMode === 'grid' || savedViewMode === 'list') ? savedViewMode : 'grid';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('pokemonViewMode', viewMode);
+  }, [viewMode]);
 
   // Fetch initial Pokemon list
   useEffect(() => {
