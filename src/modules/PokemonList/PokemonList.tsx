@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -26,7 +27,6 @@ import {
 } from '../../store/slices/pokemonSlice';
 import { PokemonCard } from '../PokemonCard/PokemonCard';
 import { PokemonCardList } from '../PokemonCard/PokemonCardList';
-import { PokemonDetailModal } from '../PokemonDetail/PokemonDetailModal';
 import { Pokemon } from '../../types/pokemon.types';
 
 // Styles constant
@@ -117,11 +117,10 @@ const styles = {
 
 export const PokemonList: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { pokemons, loading, error, page, hasMore } = useAppSelector((state) => state.pokemon);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
-  const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
 
   const [viewMode, setViewMode] = useState<'grid' | 'list'>(() => {
     const savedViewMode = localStorage.getItem('pokemonViewMode');
@@ -172,13 +171,7 @@ export const PokemonList: React.FC = () => {
 
   // Handle Pokemon card click
   const handlePokemonClick = (pokemon: Pokemon) => {
-    setSelectedPokemon(pokemon);
-    setModalOpen(true);
-  };
-
-  // Handle modal close
-  const handleModalClose = () => {
-    setModalOpen(false);
+    navigate(`/${pokemon.id}`);
   };
 
   // Handle clear error
@@ -293,13 +286,6 @@ export const PokemonList: React.FC = () => {
           </Typography>
         </Box>
       )}
-
-      {/* Pokemon Detail Modal */}
-      <PokemonDetailModal
-        pokemon={selectedPokemon}
-        open={modalOpen}
-        onClose={handleModalClose}
-      />
     </Container>
   );
 };
