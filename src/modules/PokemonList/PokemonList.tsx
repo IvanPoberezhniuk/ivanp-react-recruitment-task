@@ -9,10 +9,14 @@ import {
   Alert,
   InputAdornment,
   Paper,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@mui/material';
 import { SxProps, Theme } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
+import GridViewIcon from '@mui/icons-material/GridView';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   fetchPokemonList,
@@ -21,6 +25,7 @@ import {
   clearError,
 } from '../../store/slices/pokemonSlice';
 import { PokemonCard } from '../PokemonCard/PokemonCard';
+import { PokemonCardList } from '../PokemonCard/PokemonCardList';
 import { PokemonDetailModal } from '../PokemonDetail/PokemonDetailModal';
 import { Pokemon } from '../../types/pokemon.types';
 
@@ -61,6 +66,12 @@ const styles = {
     mb: 3,
   } as SxProps<Theme>,
 
+  viewToggleContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    mb: 3,
+  } as SxProps<Theme>,
+
   gridContainer: {
     display: 'grid',
     gridTemplateColumns: {
@@ -69,6 +80,12 @@ const styles = {
       md: 'repeat(3, 1fr)',
       lg: 'repeat(5, 1fr)',
     },
+    gap: 3,
+  } as SxProps<Theme>,
+
+  listContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(1, 1fr)',
     gap: 3,
   } as SxProps<Theme>,
 
@@ -105,6 +122,7 @@ export const PokemonList: React.FC = () => {
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   // Fetch initial Pokemon list
   useEffect(() => {
@@ -202,11 +220,38 @@ export const PokemonList: React.FC = () => {
         </Alert>
       )}
 
+      {/* View Mode Toggle */}
+      <Box sx={styles.viewToggleContainer}>
+        <ToggleButtonGroup
+          value={viewMode}
+          exclusive
+          onChange={(_, newView) => {
+            if (newView !== null) {
+              setViewMode(newView);
+            }
+          }}
+          aria-label="view mode"
+        >
+          <ToggleButton value="grid" aria-label="grid view">
+            <GridViewIcon sx={{ mr: 1 }} />
+            Grid
+          </ToggleButton>
+          <ToggleButton value="list" aria-label="list view">
+            <ViewListIcon sx={{ mr: 1 }} />
+            List
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+
       {/* Pokemon Grid */}
-      <Box sx={styles.gridContainer}>
+      <Box sx={viewMode === 'grid' ? styles.gridContainer : styles.listContainer}>
         {pokemons.map((pokemon) => (
           <Box key={pokemon.id}>
-            <PokemonCard pokemon={pokemon} onClick={handlePokemonClick} />
+            {viewMode === 'grid' ? (
+              <PokemonCard pokemon={pokemon} onClick={handlePokemonClick} />
+            ) : (
+              <PokemonCardList pokemon={pokemon} onClick={handlePokemonClick} />
+            )}
           </Box>
         ))}
       </Box>
