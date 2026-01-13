@@ -6,7 +6,7 @@ import pokemonReducer, {
   fetchPokemonById,
   searchPokemon,
 } from '../slices/pokemonSlice';
-import snackbarReducer, { showSnackbar } from '../slices/snackbarSlice';
+import snackbarReducer from '../slices/snackbarSlice';
 
 // Mock the graphqlClient
 vi.mock('../../services/graphqlClient', () => ({

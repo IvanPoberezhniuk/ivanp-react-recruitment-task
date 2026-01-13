@@ -8,7 +8,6 @@ import { pokemonDetailStyles } from "../styles/pokemonDetailStyles";
 
 export const PokemonImageSection: React.FC<PokemonImageSectionProps> = ({
   pokemon,
-  showShiny,
   onImageClick,
   selectedImageIndex,
   onSpriteSelect,
