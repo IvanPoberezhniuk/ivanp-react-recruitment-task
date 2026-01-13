@@ -8,9 +8,9 @@ import {
   Box,
   CardActionArea,
 } from '@mui/material';
-import { SxProps, Theme } from '@mui/material/styles';
 import { Pokemon } from '../../types/pokemon.types';
 import { TYPE_COLORS } from '../../theme/theme';
+import { StylesObject } from '../../types/styles.types';
 
 interface PokemonCardListProps {
   pokemon: Pokemon;
@@ -18,13 +18,13 @@ interface PokemonCardListProps {
 }
 
 // Styles constant
-const styles = {
+const styles: StylesObject = {
   card: {
     display: 'flex',
     flexDirection: 'row',
     cursor: 'pointer',
     height: '100%',
-  } as SxProps<Theme>,
+  },
 
   imageContainer: {
     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -34,7 +34,7 @@ const styles = {
     alignItems: 'center',
     minWidth: 200,
     width: 200,
-  } as SxProps<Theme>,
+  },
 
   image: {
     width: '100%',
@@ -42,38 +42,38 @@ const styles = {
     height: 'auto',
     objectFit: 'contain',
     filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
-  } as SxProps<Theme>,
+  },
 
   contentContainer: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-  } as SxProps<Theme>,
+  },
 
   headerContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     mb: 2,
-  } as SxProps<Theme>,
+  },
 
   pokemonName: {
     textTransform: 'capitalize',
     fontWeight: 600,
-  } as SxProps<Theme>,
+  },
 
   pokemonNumber: {
     fontWeight: 600,
-  } as SxProps<Theme>,
+  },
 
   typesContainer: {
     display: 'flex',
     gap: 1,
     flexWrap: 'wrap',
     mb: 2,
-  } as SxProps<Theme>,
+  },
 
-  typeChip: (typeName: string): SxProps<Theme> => ({
+  typeChip: (typeName: string) => ({
     backgroundColor: TYPE_COLORS[typeName] || '#777',
     color: '#fff',
     fontWeight: 600,
@@ -84,20 +84,20 @@ const styles = {
     display: 'flex',
     gap: 4,
     mt: 'auto',
-  } as SxProps<Theme>,
+  },
 
   statBox: {
     display: 'flex',
     flexDirection: 'column',
-  } as SxProps<Theme>,
+  },
 
   statLabel: {
     display: 'block',
-  } as SxProps<Theme>,
+  },
 
   statValue: {
     fontWeight: 600,
-  } as SxProps<Theme>,
+  },
 };
 
 export const PokemonCardList: React.FC<PokemonCardListProps> = ({ pokemon, onClick }) => {

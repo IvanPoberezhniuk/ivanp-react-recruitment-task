@@ -1,41 +1,45 @@
 import React, { useEffect, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
+
+import GridViewIcon from "@mui/icons-material/GridView";
+import SearchIcon from "@mui/icons-material/Search";
+import ViewListIcon from "@mui/icons-material/ViewList";
 import {
-  Container,
-  Typography,
-  TextField,
   Box,
   CircularProgress,
+  Container,
   InputAdornment,
-  ToggleButtonGroup,
-  ToggleButton,
   Pagination,
+  TextField,
+  Theme,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
 } from "@mui/material";
-import { SxProps, Theme } from "@mui/material/styles";
-import SearchIcon from "@mui/icons-material/Search";
-import GridViewIcon from "@mui/icons-material/GridView";
-import ViewListIcon from "@mui/icons-material/ViewList";
+
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
   fetchPokemonList,
-  searchPokemon,
   resetPokemonList,
+  searchPokemon,
 } from "../../store/slices/pokemonSlice";
+import { Pokemon } from "../../types/pokemon.types";
+import { StylesObject } from "../../types/styles.types";
 import { PokemonCard } from "../PokemonCard/PokemonCard";
 import { PokemonCardList } from "../PokemonCard/PokemonCardList";
-import { Pokemon } from "../../types/pokemon.types";
 
 // Styles constant
-const styles = {
+const styles: StylesObject = {
   container: {
     py: 4,
-  } as SxProps<Theme>,
+  },
 
   viewToggleContainer: {
     display: "flex",
     justifyContent: "flex-end",
     mb: 3,
-  } as SxProps<Theme>,
+  },
 
   gridContainer: {
     display: "grid",
@@ -46,19 +50,19 @@ const styles = {
       lg: "repeat(5, 1fr)",
     },
     gap: 3,
-  } as SxProps<Theme>,
+  },
 
   listContainer: {
     display: "grid",
     gridTemplateColumns: "repeat(1, 1fr)",
     gap: 3,
-  } as SxProps<Theme>,
+  },
 
   loadingBox: {
     display: "flex",
     justifyContent: "center",
     mt: 4,
-  } as SxProps<Theme>,
+  },
 
   loadingSpinner: {
     // CircularProgress size handled by component prop
@@ -79,25 +83,25 @@ const styles = {
     alignItems: "center",
     zIndex: 9999,
     pointerEvents: "all",
-  } as SxProps<Theme>,
+  },
 
   contentWrapper: {
     position: "relative",
     pointerEvents: (loading: boolean) => (loading ? "none" : "auto"),
     opacity: (loading: boolean) => (loading ? 0.5 : 1),
     transition: "opacity 0.3s ease",
-  } as SxProps<Theme>,
+  },
 
   paginationBox: {
     display: "flex",
     justifyContent: "center",
     mt: 4,
-  } as SxProps<Theme>,
+  },
 
   noResultsBox: {
     textAlign: "center",
     py: 8,
-  } as SxProps<Theme>,
+  },
 };
 
 const ITEMS_PER_PAGE = 20;

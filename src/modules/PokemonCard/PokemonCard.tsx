@@ -8,9 +8,9 @@ import {
   Box,
   CardActionArea,
 } from '@mui/material';
-import { SxProps, Theme } from '@mui/material/styles';
 import { Pokemon } from '../../types/pokemon.types';
 import { TYPE_COLORS } from '../../theme/theme';
+import { StylesObject } from '../../types/styles.types';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -18,13 +18,13 @@ interface PokemonCardProps {
 }
 
 // Styles constant
-const styles = {
+const styles: StylesObject = {
   card: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
     cursor: 'pointer',
-  } as SxProps<Theme>,
+  },
 
   imageContainer: {
     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -33,7 +33,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 200,
-  } as SxProps<Theme>,
+  },
 
   image: {
     width: '100%',
@@ -41,32 +41,32 @@ const styles = {
     height: 'auto',
     objectFit: 'contain',
     filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
-  } as SxProps<Theme>,
+  },
 
   headerContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     mb: 1,
-  } as SxProps<Theme>,
+  },
 
   pokemonName: {
     textTransform: 'capitalize',
     fontWeight: 600,
-  } as SxProps<Theme>,
+  },
 
   pokemonNumber: {
     fontWeight: 600,
-  } as SxProps<Theme>,
+  },
 
   typesContainer: {
     display: 'flex',
     gap: 1,
     flexWrap: 'wrap',
     mb: 1,
-  } as SxProps<Theme>,
+  },
 
-  typeChip: (typeName: string): SxProps<Theme> => ({
+  typeChip: (typeName: string) => ({
     backgroundColor: TYPE_COLORS[typeName] || '#777',
     color: '#fff',
     fontWeight: 600,
@@ -77,15 +77,15 @@ const styles = {
     display: 'flex',
     gap: 2,
     mt: 2,
-  } as SxProps<Theme>,
+  },
 
   statLabel: {
     display: 'block',
-  } as SxProps<Theme>,
+  },
 
   statValue: {
     fontWeight: 600,
-  } as SxProps<Theme>,
+  },
 };
 
 export const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, onClick }) => {

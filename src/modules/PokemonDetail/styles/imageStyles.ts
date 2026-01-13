@@ -1,7 +1,7 @@
-import { SxProps, Theme } from "@mui/material/styles";
 import { TYPE_COLORS } from "../../../theme/theme";
+import { StylesObject } from "../../../types/styles.types";
 
-export const imageStyles = {
+export const imageStyles: StylesObject = {
   imagePaper: (types: string[]) => {
     const primaryType = types[0] || "normal";
     const secondaryType = types[1] || primaryType;
@@ -27,7 +27,7 @@ export const imageStyles = {
           "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, transparent 60%)",
         pointerEvents: "none",
       },
-    } as SxProps<Theme>;
+    };
   },
 
   imageContainer: {
@@ -35,7 +35,7 @@ export const imageStyles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  } as SxProps<Theme>,
+  },
 
   image: {
     width: 280,
@@ -44,7 +44,7 @@ export const imageStyles = {
     maxHeight: 280,
     filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.3))",
     cursor: "pointer",
-  } as SxProps<Theme>,
+  },
 
   magnifierIcon: {
     position: "absolute",
@@ -64,27 +64,27 @@ export const imageStyles = {
       backgroundColor: "rgba(238, 21, 21, 0.9)",
       transform: "scale(1.1)",
     },
-  } as SxProps<Theme>,
+  },
 
   spriteGallery: {
     overflow: "hidden",
     mx: -0.75,
-  } as SxProps<Theme>,
+  },
 
   emblaViewport: {
     overflow: "hidden",
-  } as SxProps<Theme>,
+  },
 
   emblaContainer: {
     display: "flex",
     gap: 1,
     py: 1.4,
     px: 1,
-  } as SxProps<Theme>,
+  },
 
   emblaSlide: {
     flex: "0 0 auto",
-  } as SxProps<Theme>,
+  },
 
   spriteBox: (isSelected: boolean = false) =>
     ({
@@ -108,13 +108,13 @@ export const imageStyles = {
         borderColor: "primary.main",
         transform: "scale(1.05)",
       },
-    } as SxProps<Theme>),
+    }),
 
   spriteImage: {
     width: "100%",
     height: "100%",
     objectFit: "contain",
     imageRendering: "pixelated",
-  } as SxProps<Theme>,
+  },
 };
 

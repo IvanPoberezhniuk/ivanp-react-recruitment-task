@@ -14,8 +14,9 @@ import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 import HomeIcon from "@mui/icons-material/Home";
 import GridViewIcon from "@mui/icons-material/GridView";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { StylesObject } from "../../types/styles.types";
 
-const styles = {
+const styles: StylesObject = {
   appBar: {
     background: "linear-gradient(135deg, #EE1515 0%, #3B4CCA 100%)",
     boxShadow: "0 4px 12px rgba(0,0,0,0.15)",

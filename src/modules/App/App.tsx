@@ -5,8 +5,9 @@ import { PokemonDetailPage } from "../PokemonDetail/PokemonDetailPage";
 import { Header } from "../../components/Header/Header";
 import { Footer } from "../../components/Footer/Footer";
 import { GlobalSnackbar } from "../../components/GlobalSnackbar";
+import { StylesObject } from "../../types/styles.types";
 
-const styles = {
+const styles: StylesObject = {
   root: {
     minHeight: "100vh",
     bgcolor: "background.default",

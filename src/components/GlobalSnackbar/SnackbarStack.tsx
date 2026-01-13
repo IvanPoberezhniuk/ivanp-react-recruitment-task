@@ -7,8 +7,9 @@ import { Alert, AlertColor, Box, IconButton } from "@mui/material";
 
 import { useAppDispatch } from "../../store";
 import { removeSnackbar, SnackbarItem } from "../../store/slices/snackbarSlice";
+import { StylesObject } from "../../types/styles.types";
 
-const styles = {
+const styles: StylesObject = {
   container: {
     position: "fixed",
     bottom: 24,

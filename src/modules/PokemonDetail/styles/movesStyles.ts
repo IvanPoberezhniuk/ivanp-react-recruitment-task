@@ -1,12 +1,12 @@
-import { SxProps, Theme } from "@mui/material/styles";
 import { GAME_COLORS } from "../../../constants/gameColors";
+import { StylesObject } from "../../../types/styles.types";
 
-export const movesStyles = {
+export const movesStyles: StylesObject = {
   movesContainer: {
     display: "flex",
     flexWrap: "wrap",
     gap: 0.5,
-  } as SxProps<Theme>,
+  },
 
   moveChip: {
     m: 0.25,
@@ -14,11 +14,11 @@ export const movesStyles = {
     height: 22,
     transition: "all 0.2s ease",
     textTransform: "capitalize",
-  } as SxProps<Theme>,
+  },
 
   generationGroup: {
     mb: 1,
-  } as SxProps<Theme>,
+  },
 
   generationTitle: {
     fontSize: "0.7rem",
@@ -26,15 +26,15 @@ export const movesStyles = {
     color: "text.secondary",
     mb: 0.5,
     textTransform: "uppercase",
-  } as SxProps<Theme>,
+  },
 
   gamesFlexContainer: {
     display: "flex",
     flexWrap: "wrap",
     gap: 0.5,
-  } as SxProps<Theme>,
+  },
 
-  gameChip: (gameName: string): SxProps<Theme> => {
+  gameChip: (gameName: string) => {
     const gameColors = GAME_COLORS[gameName];
     return {
       m: 0.25,

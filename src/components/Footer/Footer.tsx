@@ -19,8 +19,9 @@ import {
   showSnackbar,
   SnackbarSeverity,
 } from "../../store/slices/snackbarSlice";
+import { StylesObject } from "../../types/styles.types";
 
-const styles = {
+const styles: StylesObject = {
   footer: {
     bgcolor: "background.paper",
     borderTop: "1px solid",
