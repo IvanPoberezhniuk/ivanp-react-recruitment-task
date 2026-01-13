@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { SxProps, Theme } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -32,33 +31,6 @@ import { Pokemon } from "../../types/pokemon.types";
 const styles = {
   container: {
     py: 4,
-  } as SxProps<Theme>,
-
-  headerContainer: {
-    textAlign: "center",
-    mb: 4,
-  } as SxProps<Theme>,
-
-  headerIconBox: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 2,
-    mb: 2,
-  } as SxProps<Theme>,
-
-  headerIcon: {
-    fontSize: 48,
-    color: "primary.main",
-  } as SxProps<Theme>,
-
-  headerTitle: {
-    fontWeight: 700,
-  } as SxProps<Theme>,
-
-  searchPaper: {
-    p: 2,
-    mb: 4,
   } as SxProps<Theme>,
 
   errorAlert: {
@@ -190,7 +162,10 @@ export const PokemonList: React.FC = () => {
   };
 
   // Handle page change
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
     if (!loading) {
       dispatch(fetchPokemonList(value - 1));
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -211,25 +186,7 @@ export const PokemonList: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="xl" sx={styles.container}>
-      {/* Header */}
-      <Box sx={styles.headerContainer}>
-        <Box sx={styles.headerIconBox}>
-          <CatchingPokemonIcon sx={styles.headerIcon} />
-          <Typography
-            variant="h2"
-            component="h1"
-            color="primary"
-            sx={styles.headerTitle}
-          >
-            Pokédex
-          </Typography>
-        </Box>
-        <Typography variant="h6" color="text.secondary">
-          Search and explore Pokemon from the Kanto region and beyond
-        </Typography>
-      </Box>
-
+    <Container maxWidth="lg" sx={styles.container}>
       {/* Search Bar */}
       <TextField
         fullWidth
@@ -260,7 +217,13 @@ export const PokemonList: React.FC = () => {
       )}
 
       {/* Content Wrapper with Loading Overlay */}
-      <Box sx={{ ...styles.contentWrapper, pointerEvents: loading ? "none" : "auto", opacity: loading ? 0.5 : 1 }}>
+      <Box
+        sx={{
+          ...styles.contentWrapper,
+          pointerEvents: loading ? "none" : "auto",
+          opacity: loading ? 0.5 : 1,
+        }}
+      >
         {/* View Mode Toggle */}
         <Box sx={styles.viewToggleContainer}>
           <ToggleButtonGroup
@@ -274,12 +237,10 @@ export const PokemonList: React.FC = () => {
             aria-label="view mode"
           >
             <ToggleButton value="grid" aria-label="grid view">
-              <GridViewIcon sx={{ mr: 1 }} />
-              Grid
+              <GridViewIcon />
             </ToggleButton>
             <ToggleButton value="list" aria-label="list view">
-              <ViewListIcon sx={{ mr: 1 }} />
-              List
+              <ViewListIcon />
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>
@@ -293,7 +254,10 @@ export const PokemonList: React.FC = () => {
               {viewMode === "grid" ? (
                 <PokemonCard pokemon={pokemon} onClick={handlePokemonClick} />
               ) : (
-                <PokemonCardList pokemon={pokemon} onClick={handlePokemonClick} />
+                <PokemonCardList
+                  pokemon={pokemon}
+                  onClick={handlePokemonClick}
+                />
               )}
             </Box>
           ))}
@@ -306,15 +270,15 @@ export const PokemonList: React.FC = () => {
               count={totalPages}
               page={page + 1}
               onChange={handlePageChange}
-            color="primary"
-            size="large"
-            showFirstButton
-            showLastButton
-            siblingCount={1}
-            boundaryCount={1}
-          />
-        </Box>
-      )}
+              color="primary"
+              size="large"
+              showFirstButton
+              showLastButton
+              siblingCount={1}
+              boundaryCount={1}
+            />
+          </Box>
+        )}
 
         {/* No Results */}
         {pokemons.length === 0 && (
