@@ -10,7 +10,6 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import HomeIcon from "@mui/icons-material/Home";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import {
-  Alert,
   Box,
   Breadcrumbs,
   CircularProgress,
@@ -39,7 +38,7 @@ export const PokemonDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { selectedPokemon, loading, error } = useAppSelector(
+  const { selectedPokemon, loading } = useAppSelector(
     (state) => state.pokemon
   );
 
@@ -67,16 +66,6 @@ export const PokemonDetailPage: React.FC = () => {
       <Container maxWidth="lg" sx={styles.container}>
         <Box sx={styles.loadingContainer}>
           <CircularProgress size={60} />
-        </Box>
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container maxWidth="lg" sx={styles.container}>
-        <Box sx={styles.errorContainer}>
-          <Alert severity="error">{error}</Alert>
         </Box>
       </Container>
     );
