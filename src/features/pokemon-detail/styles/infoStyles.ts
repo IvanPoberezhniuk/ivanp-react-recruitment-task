@@ -4,9 +4,9 @@ import { StylesObject } from "../../../shared/types/styles.types";
 export const infoStyles: StylesObject = {
   typesAbilitiesRow: {
     display: "grid",
-    gridTemplateColumns: "44px 1fr",
-    gap: 1,
-    rowGap: 1.5,
+    gridTemplateColumns: { xs: "40px 1fr", sm: "44px 1fr" },
+    gap: { xs: 0.75, sm: 1 },
+    rowGap: { xs: 1, sm: 1.5 },
   },
 
   inlineGroup: {

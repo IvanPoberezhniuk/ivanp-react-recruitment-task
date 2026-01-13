@@ -2,8 +2,8 @@ import { StylesObject } from "../../../shared/types/styles.types";
 
 export const pokemonDetailStyles: StylesObject = {
   container: {
-    py: 1.5,
-    maxWidth: "100%",
+    py: { xs: 1, sm: 1.5 },
+    px: { xs: 1, sm: 2 },
   },
 
   breadcrumbs: {
@@ -36,8 +36,8 @@ export const pokemonDetailStyles: StylesObject = {
       md: `"header ."
          "image details"`,
     },
-    columnGap: { xs: 1.5, md: 6 },
-    rowGap: { xs: 1.5, md: 2 },
+    columnGap: { xs: 1, sm: 2, md: 6 },
+    rowGap: { xs: 1, sm: 1.5, md: 2 },
   },
 
   leftColumn: {
@@ -45,12 +45,13 @@ export const pokemonDetailStyles: StylesObject = {
     flexDirection: "column",
     gap: 2,
     gridArea: { xs: "main", md: "image" },
+    overflowX: "hidden",
   },
 
   rightColumn: {
     display: "flex",
     flexDirection: "column",
-    gap: 1.5,
+    gap: { xs: 1, sm: 1.5 },
     gridArea: { xs: "auto", md: "details" },
   },
 
@@ -74,4 +75,3 @@ export const pokemonDetailStyles: StylesObject = {
     mb: 1.5,
   },
 };
-

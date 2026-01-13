@@ -4,13 +4,13 @@ export const statsStyles: StylesObject = {
   statsRow: {
     display: "grid",
     gridTemplateColumns: { xs: "1fr", md: "1fr 2fr" },
-    gap: 2,
+    gap: { xs: 1.5, sm: 2 },
   },
 
   statsGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
-    gap: 2,
+    gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)" },
+    gap: { xs: 1.5, sm: 2 },
   },
 
   statBar: {

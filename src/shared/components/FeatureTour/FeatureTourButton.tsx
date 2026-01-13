@@ -1,7 +1,7 @@
 import React from "react";
 
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
-import { Badge, Fab } from "@mui/material";
+import { Badge, Fab, Tooltip } from "@mui/material";
 
 import { StylesObject } from "../../types/styles.types";
 
@@ -56,20 +56,13 @@ export const FeatureTourButton: React.FC<FeatureTourButtonProps> = ({
   showBadge,
 }) => {
   return (
-    <Badge
-      badgeContent="NEW"
-      color="error"
-      invisible={!showBadge}
-      sx={styles.badge}
+    <Fab
+      color="primary"
+      aria-label="feature tour"
+      onClick={onClick}
+      sx={styles.fab}
     >
-      <Fab
-        color="primary"
-        aria-label="feature tour"
-        onClick={onClick}
-        sx={styles.fab}
-      >
-        <LightbulbIcon />
-      </Fab>
-    </Badge>
+      <LightbulbIcon />
+    </Fab>
   );
 };

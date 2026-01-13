@@ -6,7 +6,7 @@ export const headerStyles: StylesObject = {
     display: "flex",
     alignItems: "center",
     flexWrap: "wrap",
-    gap: 1,
+    gap: { xs: 0.75, sm: 1 },
     justifyContent: "space-between",
     gridArea: "header",
   },
@@ -24,11 +24,12 @@ export const headerStyles: StylesObject = {
     textTransform: "capitalize",
     fontWeight: 700,
     mb: 0,
+    fontSize: { xs: "1.5rem", sm: "2rem" },
   },
 
   pokemonNumber: {
     color: "text.secondary",
-    fontSize: "1rem",
+    fontSize: { xs: "0.875rem", sm: "1rem" },
     mb: 0.5,
   },
 

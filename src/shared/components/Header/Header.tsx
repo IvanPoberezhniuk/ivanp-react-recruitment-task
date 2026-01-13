@@ -1,19 +1,24 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+
+import { useLocation, useNavigate } from "react-router-dom";
+
+import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
+import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
+  Box,
+  Button,
+  Container,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
   Toolbar,
   Typography,
-  Button,
-  Box,
-  Container,
-  IconButton,
-  Tooltip,
 } from "@mui/material";
-import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
-import HomeIcon from "@mui/icons-material/Home";
-import GridViewIcon from "@mui/icons-material/GridView";
-import GitHubIcon from "@mui/icons-material/GitHub";
+
 import { StylesObject } from "../../types/styles.types";
 
 const styles: StylesObject = {
@@ -51,113 +56,161 @@ const styles: StylesObject = {
     color: "white",
     textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
   },
-  navButtons: {
-    display: "flex",
-    gap: 1,
+  desktopNav: {
+    display: { xs: "none", sm: "flex" },
+    gap: 2,
+    alignItems: "center",
   },
-  homeButton: {
+  mobileMenuButton: {
+    display: { xs: "flex", sm: "none" },
     color: "white",
-    borderColor: "white",
-    "&:hover": {
-      borderColor: "#FFCC00",
-      backgroundColor: "rgba(255, 204, 0, 0.1)",
-    },
   },
-  navButton: {
+  navLink: {
     color: "white",
     textTransform: "none",
-    fontSize: "0.95rem",
+    fontSize: "1rem",
+    fontWeight: 500,
     px: 2,
     "&:hover": {
       backgroundColor: "rgba(255, 255, 255, 0.1)",
     },
   },
-  iconButton: {
-    color: "white",
-    "&:hover": {
-      backgroundColor: "rgba(255, 255, 255, 0.1)",
-      color: "#FFCC00",
+  activeNavLink: {
+    color: "#FFCC00",
+    backgroundColor: "rgba(255, 204, 0, 0.1)",
+  },
+  drawer: {
+    "& .MuiDrawer-paper": {
+      borderTopLeftRadius: 16,
+      borderTopRightRadius: 16,
+      pb: 2,
     },
+  },
+  drawerList: {
+    width: "100%",
+    pt: 2,
+  },
+  drawerItem: {
+    py: 1.5,
+  },
+  drawerItemText: {
+    fontSize: "1.1rem",
+    fontWeight: 500,
   },
 };
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const isHomePage = location.pathname === "/";
+  const isHighlightsPage = location.pathname === "/highlights";
 
   const handleLogoClick = () => {
     navigate("/");
+    setMobileMenuOpen(false);
   };
 
   const handleHomeClick = () => {
     navigate("/");
+    setMobileMenuOpen(false);
   };
 
   const handleHighlightsClick = () => {
     navigate("/highlights");
+    setMobileMenuOpen(false);
   };
 
-  const handleGitHubClick = () => {
-    window.open("https://github.com/PokeAPI/pokeapi", "_blank", "noopener,noreferrer");
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
-    <AppBar position="sticky" sx={styles.appBar}>
-      <Container maxWidth="lg">
-        <Toolbar sx={styles.toolbar} disableGutters>
-          {/* Logo Section */}
-          <Box sx={styles.logoSection} onClick={handleLogoClick}>
-            <CatchingPokemonIcon sx={styles.logoIcon} />
-            <Typography variant="h1" sx={styles.title}>
-              Pokédex
-            </Typography>
-          </Box>
+    <>
+      <AppBar position="sticky" sx={styles.appBar}>
+        <Container maxWidth="lg">
+          <Toolbar sx={styles.toolbar} disableGutters>
+            {/* Logo Section */}
+            <Box sx={styles.logoSection} onClick={handleLogoClick}>
+              <CatchingPokemonIcon sx={styles.logoIcon} />
+              <Typography variant="h1" sx={styles.title}>
+                Pokédex
+              </Typography>
+            </Box>
 
-          {/* Navigation Buttons */}
-          <Box sx={styles.navButtons}>
-            {/* Home/Browse Button */}
-            {!isHomePage ? (
+            {/* Desktop Navigation */}
+            <Box sx={styles.desktopNav}>
               <Button
-                variant="outlined"
-                startIcon={<HomeIcon />}
                 onClick={handleHomeClick}
-                sx={styles.homeButton}
+                sx={{
+                  ...styles.navLink,
+                  ...(isHomePage && styles.activeNavLink),
+                }}
               >
                 Home
               </Button>
-            ) : (
               <Button
-                startIcon={<GridViewIcon />}
-                onClick={handleHomeClick}
-                sx={styles.navButton}
+                onClick={handleHighlightsClick}
+                sx={{
+                  ...styles.navLink,
+                  ...(isHighlightsPage && styles.activeNavLink),
+                }}
               >
-                Browse All
+                Highlights
               </Button>
-            )}
+            </Box>
 
-            {/* Highlights Link */}
-            <Button
-              onClick={handleHighlightsClick}
-              sx={styles.navButton}
+            {/* Mobile Menu Button */}
+            <IconButton
+              sx={styles.mobileMenuButton}
+              onClick={toggleMobileMenu}
+              aria-label="menu"
             >
-              Highlights
-            </Button>
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </Container>
+      </AppBar>
 
-            {/* GitHub Link */}
-            <Tooltip title="View on GitHub">
-              <IconButton
-                onClick={handleGitHubClick}
-                sx={styles.iconButton}
-                size="medium"
-              >
-                <GitHubIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+      {/* Mobile Drawer */}
+      <Drawer
+        anchor="bottom"
+        open={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        sx={styles.drawer}
+      >
+        <List sx={styles.drawerList}>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={handleHomeClick}
+              selected={isHomePage}
+              sx={styles.drawerItem}
+            >
+              <ListItemText
+                primary="Home"
+                slotProps={{
+                  primary: { sx: styles.drawerItemText },
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={handleHighlightsClick}
+              selected={isHighlightsPage}
+              sx={styles.drawerItem}
+            >
+              <ListItemText
+                primary="Highlights"
+                slotProps={{
+                  primary: { sx: styles.drawerItemText },
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </Drawer>
+    </>
   );
 };
-

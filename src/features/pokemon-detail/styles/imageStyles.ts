@@ -9,13 +9,14 @@ export const imageStyles: StylesObject = {
     const color2 = TYPE_COLORS[secondaryType] || "#764ba2";
     return {
       background: `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`,
-      padding: 2,
+      padding: { xs: 1, sm: 1.5, md: 2 },
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       borderRadius: 1,
       position: "relative",
       overflow: "hidden",
+      maxWidth: "100%",
       "&::before": {
         content: '""',
         position: "absolute",
@@ -35,13 +36,16 @@ export const imageStyles: StylesObject = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    maxWidth: "100%",
+    width: "100%",
   },
 
   image: {
-    width: 280,
-    minWidth: 280,
-    minHeight: 280,
-    maxHeight: 280,
+    width: { xs: "100%", sm: 280 },
+    minWidth: { xs: "auto", sm: 280 },
+    minHeight: { xs: 200, sm: 280 },
+    maxHeight: { xs: 280, sm: 280 },
+    maxWidth: { xs: "100%", sm: 280 },
     filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.3))",
     cursor: "pointer",
   },
@@ -68,7 +72,8 @@ export const imageStyles: StylesObject = {
 
   spriteGallery: {
     overflow: "hidden",
-    mx: -0.75,
+    mx: { xs: 0, sm: -0.75 },
+    maxWidth: "100%",
   },
 
   emblaViewport: {
@@ -88,10 +93,10 @@ export const imageStyles: StylesObject = {
 
   spriteBox: (isSelected: boolean = false) =>
     ({
-      width: 72,
-      height: 72,
-      minWidth: 72,
-      minHeight: 72,
+      width: { xs: 60, sm: 72 },
+      height: { xs: 60, sm: 72 },
+      minWidth: { xs: 60, sm: 72 },
+      minHeight: { xs: 60, sm: 72 },
       flexShrink: 0,
       border: "2px solid",
       borderColor: isSelected ? "primary.main" : "divider",

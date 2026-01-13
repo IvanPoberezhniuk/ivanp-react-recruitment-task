@@ -25,7 +25,7 @@ import { useViewMode } from "../../features/pokemon-list/hooks/useViewMode";
 // Simplified styles - most styling moved to child components
 const styles: StylesObject = {
   container: {
-    py: 4,
+    py: { xs: 2, sm: 3, md: 4 },
   },
   paginationContainer: {
     display: "flex",

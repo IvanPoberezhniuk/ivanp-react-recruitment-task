@@ -1,18 +1,21 @@
 import React from "react";
+
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Container,
-  Typography,
-  Link,
-  Divider,
-  Button,
-} from "@mui/material";
+
+import ApiIcon from "@mui/icons-material/Api";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import ApiIcon from "@mui/icons-material/Api";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Link,
+  Typography,
+} from "@mui/material";
+
 import { useAppDispatch } from "../../../store";
 import {
   showSnackbar,
@@ -30,15 +33,14 @@ const styles: StylesObject = {
   },
   container: {
     display: "flex",
-    flexDirection: { xs: "column", md: "row" },
-    justifyContent: "space-between",
-    alignItems: { xs: "center", md: "flex-start" },
-    gap: 3,
+    justifyContent: { md: "space-between" },
+    flexWrap: "wrap",
+
+    gap: 1.5,
   },
   section: {
     display: "flex",
     flexDirection: "column",
-    alignItems: { xs: "center", md: "flex-start" },
     gap: 1,
   },
   sectionTitle: {

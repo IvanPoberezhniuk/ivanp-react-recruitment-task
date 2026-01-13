@@ -7,15 +7,17 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const styles: StylesObject = {
   container: {
-    py: 4,
+    py: { xs: 2, sm: 3, md: 4 },
+    px: { xs: 1, sm: 2 },
+    overflowX: "hidden",
   },
   header: {
-    mb: 4,
+    mb: { xs: 2, sm: 3, md: 4 },
     textAlign: 'center',
   },
   title: {
     fontWeight: 700,
-    fontSize: '2.5rem',
+    fontSize: { xs: '1.75rem', sm: '2rem', md: '2.5rem' },
     background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
@@ -23,7 +25,7 @@ const styles: StylesObject = {
   },
   subtitle: {
     color: 'text.secondary',
-    fontSize: '1.1rem',
+    fontSize: { xs: '0.9rem', sm: '1rem', md: '1.1rem' },
   },
   gridContainer: {
     display: 'grid',
@@ -31,10 +33,10 @@ const styles: StylesObject = {
       xs: '1fr',
       md: 'repeat(2, 1fr)',
     },
-    gap: 3,
+    gap: { xs: 2, sm: 2.5, md: 3 },
   },
   featureCard: {
-    p: 3,
+    p: { xs: 2, sm: 2.5, md: 3 },
     backgroundColor: 'background.paper',
     borderRadius: 2,
     boxShadow: 2,
@@ -45,13 +47,13 @@ const styles: StylesObject = {
     },
   },
   icon: {
-    fontSize: '2.5rem',
+    fontSize: { xs: '2rem', sm: '2.25rem', md: '2.5rem' },
     mb: 2,
     display: 'block',
   },
   featureTitle: {
     fontWeight: 600,
-    fontSize: '1.25rem',
+    fontSize: { xs: '1.1rem', sm: '1.2rem', md: '1.25rem' },
     mb: 1,
   },
   description: {
