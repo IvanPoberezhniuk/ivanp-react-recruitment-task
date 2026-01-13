@@ -4,7 +4,7 @@ import { TYPE_COLORS } from "../../../theme/theme";
 export const infoStyles = {
   typesAbilitiesRow: {
     display: "grid",
-    gridTemplateColumns: "3rem 1fr",
+    gridTemplateColumns: "44px 1fr",
     gap: 1,
     rowGap: 1.5,
   } as SxProps<Theme>,

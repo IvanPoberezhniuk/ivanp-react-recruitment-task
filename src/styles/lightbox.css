@@ -1,0 +1,92 @@
+/* Custom Lightbox Styles for Pokemon Theme */
+
+/* Override default background */
+:root {
+  --yarl__color_backdrop: rgba(17, 15, 15, 0.587);
+  --yarl__color_button: #c9c9c9;
+  --yarl__color_button_active: #ee1515;
+  --yarl__color_button_disabled: rgba(255, 255, 255, 0.3);
+}
+
+/* Lightbox container */
+.yarl__root {
+  --yarl__thumbnails_thumbnail_border: 2px solid transparent;
+  --yarl__thumbnails_thumbnail_active_border: 2px solid #ee1515;
+  --yarl__thumbnails_thumbnail_border_radius: 8px;
+  --yarl__thumbnails_thumbnail_padding: 4px;
+}
+
+/* Image container */
+.yarl__slide_image {
+  background-color: transparent;
+  border-radius: 8px;
+  image-rendering: auto;
+}
+
+/* Thumbnails styling */
+.yarl__thumbnails_thumbnail {
+  background-color: rgba(255, 255, 255, 0.754);
+  transition: all 0.2s ease;
+}
+
+.yarl__thumbnails_thumbnail:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.yarl__thumbnails_thumbnail_active {
+  background-color: rgba(238, 21, 21, 0.2);
+  box-shadow: 0 0 12px rgba(238, 21, 21, 0.5);
+}
+
+/* Navigation buttons */
+.yarl__button {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.2s ease;
+}
+
+.yarl__button:hover {
+  background-color: rgba(238, 21, 21, 0.2);
+  transform: scale(1.1);
+}
+
+/* Close button */
+.yarl__button_close {
+  background-color: rgba(238, 21, 21, 0.8);
+  border-radius: 50%;
+  padding: 8px;
+}
+
+.yarl__button_close:hover {
+  background-color: rgba(238, 21, 21, 1);
+  transform: scale(1.15);
+}
+
+/* Toolbar */
+.yarl__toolbar {
+  padding: 16px;
+}
+
+/* Slide counter */
+.yarl__slide_title {
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 1.1rem;
+}
+
+/* Loading spinner */
+.yarl__icon_loading {
+  color: #ee1515;
+}
+
+/* Zoom controls */
+.yarl__zoom_button {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.yarl__zoom_button:hover {
+  background-color: rgba(238, 21, 21, 0.8);
+}

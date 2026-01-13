@@ -21,22 +21,24 @@ export const PokemonInfo: React.FC<PokemonInfoProps> = ({
       <Divider sx={pokemonDetailStyles.sectionDivider} />
       <Stack sx={styles.typesAbilitiesRow}>
         {types && types.length > 0 && (
-          <Box sx={styles.inlineGroup}>
+          <>
             <Typography variant="caption" sx={styles.inlineLabel}>
               Types:
             </Typography>
-            {types.map((type) => (
-              <Chip
-                key={type.type.name}
-                label={type.type.name}
-                size="small"
-                sx={styles.typeChip(type.type.name)}
-              />
-            ))}
-          </Box>
+            <Box sx={styles.inlineValue}>
+              {types.map((type) => (
+                <Chip
+                  key={type.type.name}
+                  label={type.type.name}
+                  size="small"
+                  sx={styles.typeChip(type.type.name)}
+                />
+              ))}
+            </Box>
+          </>
         )}
         {abilities && abilities.length > 0 && (
-          <Box sx={styles.inlineGroup}>
+          <>
             <Typography variant="caption" sx={styles.inlineLabel}>
               Abilities:
             </Typography>
@@ -61,43 +63,43 @@ export const PokemonInfo: React.FC<PokemonInfoProps> = ({
                 />
               ))}
             </Box>
-          </Box>
+          </>
         )}
         {baseExperience && (
-          <Box sx={styles.inlineGroup}>
+          <>
             <Typography variant="caption" sx={styles.inlineLabel}>
               XP:
             </Typography>
             <Typography sx={styles.statValue}>{baseExperience}</Typography>
-          </Box>
+          </>
         )}
-        {baseExperience && (
-          <Box sx={styles.inlineGroup}>
+        {baseStatTotal && (
+          <>
             <Typography variant="caption" sx={styles.inlineLabel}>
               BST:
             </Typography>
             <Typography sx={styles.statValue}>{baseStatTotal}</Typography>
-          </Box>
+          </>
         )}
         {height && (
-          <Box sx={styles.inlineGroup}>
+          <>
             <Typography variant="caption" sx={styles.inlineLabel}>
               Height:
             </Typography>
             <Typography sx={styles.statValue}>
               {(height / 10).toFixed(1)} m
             </Typography>
-          </Box>
+          </>
         )}
         {weight && (
-          <Box sx={styles.inlineGroup}>
+          <>
             <Typography variant="caption" sx={styles.inlineLabel}>
               Weight:
             </Typography>
             <Typography sx={styles.statValue}>
               {(weight / 10).toFixed(1)} kg
             </Typography>
-          </Box>
+          </>
         )}
       </Stack>
     </Box>

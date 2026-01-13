@@ -50,3 +50,46 @@ fragment PokemonSpeciesFields on pokemon_v2_pokemon {
   }
 }
 
+# Pokemon sprites information
+fragment PokemonSpritesFields on pokemon_v2_pokemon {
+  pokemon_v2_pokemonsprites {
+    sprites
+  }
+}
+
+# Pokemon moves information
+fragment PokemonMovesFields on pokemon_v2_pokemon {
+  pokemon_v2_pokemonmoves(limit: 100) {
+    level
+    pokemon_v2_move {
+      id
+      name
+    }
+    pokemon_v2_movelearnmethod {
+      id
+      name
+    }
+    pokemon_v2_versiongroup {
+      id
+      name
+    }
+  }
+}
+
+# Pokemon game indices information
+fragment PokemonGameIndicesFields on pokemon_v2_pokemon {
+  pokemon_v2_pokemongameindices {
+    game_index
+    pokemon_v2_version {
+      id
+      name
+    }
+  }
+}
+
+# Pokemon cries information
+fragment PokemonCriesFields on pokemon_v2_pokemon {
+  pokemon_v2_pokemoncries {
+    cries
+  }
+}

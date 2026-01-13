@@ -21,6 +21,10 @@ query GetPokemonById($id: Int!) {
     ...PokemonStatsFields
     ...PokemonAbilitiesFields
     ...PokemonSpeciesFields
+    ...PokemonSpritesFields
+    ...PokemonMovesFields
+    ...PokemonGameIndicesFields
+    ...PokemonCriesFields
   }
 }
 
@@ -32,6 +36,10 @@ query GetPokemonByName($name: String!) {
     ...PokemonStatsFields
     ...PokemonAbilitiesFields
     ...PokemonSpeciesFields
+    ...PokemonSpritesFields
+    ...PokemonMovesFields
+    ...PokemonGameIndicesFields
+    ...PokemonCriesFields
   }
 }
 

@@ -1,5 +1,6 @@
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
+import "../../styles/lightbox.css";
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -192,6 +193,7 @@ export const PokemonDetailPage: React.FC = () => {
           borderRadius: 4,
           padding: 0,
           gap: 8,
+          vignette: false,
         }}
         zoom={{
           maxZoomPixelRatio: 3,

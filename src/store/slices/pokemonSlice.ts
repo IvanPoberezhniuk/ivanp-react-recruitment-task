@@ -6,8 +6,10 @@ import { getSdk } from '../../generated/graphql';
 const LIMIT = 20;
 const sdk = getSdk(graphqlClient);
 
-// Helper function to transform GraphQL Pokemon to REST-like Pokemon
 const transformPokemon = (gqlPokemon: any): Pokemon => {
+  const spritesData = gqlPokemon.pokemon_v2_pokemonsprites?.[0]?.sprites || {};
+  const criesData = gqlPokemon.pokemon_v2_pokemoncries?.[0]?.cries || {};
+
   return {
     id: gqlPokemon.id,
     name: gqlPokemon.name,
@@ -22,8 +24,15 @@ const transformPokemon = (gqlPokemon: any): Pokemon => {
         url: `https://pokeapi.co/api/v2/type/${pt.pokemon_v2_type?.id}/`,
       },
     })) || [],
-    sprites: {
+    sprites: spritesData.front_default ? spritesData : {
       front_default: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${gqlPokemon.id}.png`,
+      front_shiny: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${gqlPokemon.id}.png`,
+      other: {
+        'official-artwork': {
+          front_default: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${gqlPokemon.id}.png`,
+          front_shiny: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${gqlPokemon.id}.png`,
+        },
+      },
     },
     stats: gqlPokemon.pokemon_v2_pokemonstats?.map((ps: any) => ({
       base_stat: ps.base_stat,
@@ -41,6 +50,34 @@ const transformPokemon = (gqlPokemon: any): Pokemon => {
         url: `https://pokeapi.co/api/v2/ability/${pa.pokemon_v2_ability?.id}/`,
       },
     })) || [],
+    moves: gqlPokemon.pokemon_v2_pokemonmoves?.map((pm: any) => ({
+      move: {
+        name: pm.pokemon_v2_move?.name || '',
+        url: `https://pokeapi.co/api/v2/move/${pm.pokemon_v2_move?.id}/`,
+      },
+      version_group_details: [{
+        level_learned_at: pm.level || 0,
+        move_learn_method: {
+          name: pm.pokemon_v2_movelearnmethod?.name || '',
+          url: `https://pokeapi.co/api/v2/move-learn-method/${pm.pokemon_v2_movelearnmethod?.id}/`,
+        },
+        version_group: {
+          name: pm.pokemon_v2_versiongroup?.name || '',
+          url: `https://pokeapi.co/api/v2/version-group/${pm.pokemon_v2_versiongroup?.id}/`,
+        },
+      }],
+    })) || [],
+    game_indices: gqlPokemon.pokemon_v2_pokemongameindices?.map((gi: any) => ({
+      game_index: gi.game_index,
+      version: {
+        name: gi.pokemon_v2_version?.name || '',
+        url: `https://pokeapi.co/api/v2/version/${gi.pokemon_v2_version?.id}/`,
+      },
+    })) || [],
+    cries: criesData.latest ? {
+      latest: criesData.latest,
+      legacy: criesData.legacy || criesData.latest,
+    } : undefined,
     species: gqlPokemon.pokemon_v2_pokemonspecy ? {
       name: gqlPokemon.pokemon_v2_pokemonspecy.name,
       url: `https://pokeapi.co/api/v2/pokemon-species/${gqlPokemon.pokemon_v2_pokemonspecy.id}/`,
@@ -48,7 +85,6 @@ const transformPokemon = (gqlPokemon: any): Pokemon => {
   };
 };
 
-// Async thunk for fetching Pokemon list using GraphQL
 export const fetchPokemonList = createAsyncThunk(
   'pokemon/fetchPokemonList',
   async (page: number = 0) => {
@@ -70,21 +106,18 @@ export const fetchPokemonList = createAsyncThunk(
   }
 );
 
-// Async thunk for fetching a single Pokemon by ID or name using GraphQL
 export const fetchPokemonById = createAsyncThunk(
   'pokemon/fetchPokemonById',
   async (idOrName: string | number) => {
     let data;
 
     if (typeof idOrName === 'number') {
-      // Fetch by ID
       data = await sdk.GetPokemonById({ id: idOrName });
       if (!data.pokemon_v2_pokemon_by_pk) {
         throw new Error('Failed to fetch Pokemon details');
       }
       return transformPokemon(data.pokemon_v2_pokemon_by_pk);
     } else {
-      // Fetch by name
       data = await sdk.GetPokemonByName({ name: idOrName.toLowerCase() });
       if (!data.pokemon_v2_pokemon || data.pokemon_v2_pokemon.length === 0) {
         throw new Error('Failed to fetch Pokemon details');
@@ -94,11 +127,9 @@ export const fetchPokemonById = createAsyncThunk(
   }
 );
 
-// Async thunk for searching Pokemon by name using GraphQL
 export const searchPokemon = createAsyncThunk(
   'pokemon/searchPokemon',
   async (searchTerm: string) => {
-    // Add % wildcards for partial matching
     const pattern = `%${searchTerm.toLowerCase()}%`;
     const data = await sdk.SearchPokemon({ searchTerm: pattern });
     
@@ -106,7 +137,6 @@ export const searchPokemon = createAsyncThunk(
       throw new Error('Pokemon not found');
     }
     
-    // Return array of matching Pokemon
     return data.pokemon_v2_pokemon.map(transformPokemon);
   }
 );
@@ -142,7 +172,6 @@ export const pokemonSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Fetch Pokemon List
     builder
       .addCase(fetchPokemonList.pending, (state) => {
         state.loading = true;
@@ -160,7 +189,6 @@ export const pokemonSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch Pokemon list';
       });
 
-    // Fetch Pokemon by ID
     builder
       .addCase(fetchPokemonById.pending, (state) => {
         state.loading = true;
@@ -175,7 +203,6 @@ export const pokemonSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch Pokemon details';
       });
 
-    // Search Pokemon
     builder
       .addCase(searchPokemon.pending, (state) => {
         state.loading = true;
