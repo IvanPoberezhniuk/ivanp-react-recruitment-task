@@ -109,7 +109,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             onChange={(e) => onGenerationChange(e.target.value)}
             displayEmpty
           >
-            <MenuItem value="All">All Generations</MenuItem>
+            <MenuItem value="All">All</MenuItem>
             {Object.entries(GENERATION_RANGES).map(([key, value]) => (
               <MenuItem key={key} value={key}>
                 {value.label}
