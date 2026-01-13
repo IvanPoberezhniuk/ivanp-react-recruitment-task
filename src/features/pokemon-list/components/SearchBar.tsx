@@ -1,30 +1,32 @@
-import React from 'react';
+import React from "react";
+
+import GridViewIcon from "@mui/icons-material/GridView";
+import SearchIcon from "@mui/icons-material/Search";
+import ViewListIcon from "@mui/icons-material/ViewList";
 import {
   Box,
-  TextField,
   InputAdornment,
+  TextField,
   ToggleButton,
   ToggleButtonGroup,
   Tooltip,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import GridViewIcon from '@mui/icons-material/GridView';
-import ViewListIcon from '@mui/icons-material/ViewList';
-import { StylesObject } from '../../../shared/types/styles.types';
+} from "@mui/material";
+
+import { StylesObject } from "../../../shared/types/styles.types";
 
 interface SearchBarProps {
   searchTerm: string;
   onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  viewMode: 'grid' | 'list';
-  onViewModeChange: (mode: 'grid' | 'list') => void;
+  viewMode: "grid" | "list";
+  onViewModeChange: (mode: "grid" | "list") => void;
 }
 
 const styles: StylesObject = {
   topBar: {
-    display: 'flex',
+    display: "flex",
     gap: 2,
     mb: 3,
-    alignItems: 'center',
+    alignItems: "center",
   },
   searchField: {
     flex: 1,
@@ -47,6 +49,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         placeholder="Search Pokémon by name..."
         value={searchTerm}
         onChange={onSearchChange}
+        slotProps={{
+          input: { sx: { background: "#fff" } },
+        }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -80,4 +85,3 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     </Box>
   );
 };
-

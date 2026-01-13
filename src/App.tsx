@@ -5,6 +5,7 @@ import { PokemonDetailPage } from "./pages/PokemonDetailPage";
 import { Header } from "./shared/components/Header/Header";
 import { Footer } from "./shared/components/Footer/Footer";
 import { GlobalSnackbar } from "./shared/components/GlobalSnackbar";
+import { FeatureTour } from "./shared/components/FeatureTour";
 import { StylesObject } from "./shared/types/styles.types";
 
 const styles: StylesObject = {
@@ -24,22 +25,16 @@ const styles: StylesObject = {
 export const App = () => {
   return (
     <Box sx={styles.root}>
-      {/* Header - persists across all routes */}
       <Header />
-
-      {/* Main Content Area */}
       <Box component="main" sx={styles.main}>
         <Routes>
           <Route path="/" element={<PokemonListPage />} />
           <Route path="/:id" element={<PokemonDetailPage />} />
         </Routes>
       </Box>
-
-      {/* Footer - persists across all routes */}
       <Footer />
-
-      {/* Global Snackbar - persists across all routes */}
       <GlobalSnackbar />
+      <FeatureTour />
     </Box>
   );
 }
