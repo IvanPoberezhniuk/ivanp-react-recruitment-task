@@ -7,9 +7,13 @@ import {
   Button,
   Box,
   Container,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import CatchingPokemonIcon from "@mui/icons-material/CatchingPokemon";
 import HomeIcon from "@mui/icons-material/Home";
+import GridViewIcon from "@mui/icons-material/GridView";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 const styles = {
   appBar: {
@@ -58,6 +62,22 @@ const styles = {
       backgroundColor: "rgba(255, 204, 0, 0.1)",
     },
   },
+  navButton: {
+    color: "white",
+    textTransform: "none",
+    fontSize: "0.95rem",
+    px: 2,
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.1)",
+    },
+  },
+  iconButton: {
+    color: "white",
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      color: "#FFCC00",
+    },
+  },
 };
 
 export const Header: React.FC = () => {
@@ -71,6 +91,10 @@ export const Header: React.FC = () => {
 
   const handleHomeClick = () => {
     navigate("/");
+  };
+
+  const handleGitHubClick = () => {
+    window.open("https://github.com/PokeAPI/pokeapi", "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -87,7 +111,8 @@ export const Header: React.FC = () => {
 
           {/* Navigation Buttons */}
           <Box sx={styles.navButtons}>
-            {!isHomePage && (
+            {/* Home/Browse Button */}
+            {!isHomePage ? (
               <Button
                 variant="outlined"
                 startIcon={<HomeIcon />}
@@ -96,7 +121,26 @@ export const Header: React.FC = () => {
               >
                 Home
               </Button>
+            ) : (
+              <Button
+                startIcon={<GridViewIcon />}
+                onClick={handleHomeClick}
+                sx={styles.navButton}
+              >
+                Browse All
+              </Button>
             )}
+
+            {/* GitHub Link */}
+            <Tooltip title="View on GitHub">
+              <IconButton
+                onClick={handleGitHubClick}
+                sx={styles.iconButton}
+                size="medium"
+              >
+                <GitHubIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Toolbar>
       </Container>

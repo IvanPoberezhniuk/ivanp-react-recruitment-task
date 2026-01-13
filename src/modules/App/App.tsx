@@ -4,6 +4,7 @@ import { PokemonList } from "../PokemonList/PokemonList";
 import { PokemonDetailPage } from "../PokemonDetail/PokemonDetailPage";
 import { Header } from "../../components/Header/Header";
 import { Footer } from "../../components/Footer/Footer";
+import { GlobalSnackbar } from "../../components/GlobalSnackbar";
 
 const styles = {
   root: {
@@ -35,6 +36,9 @@ export const App = () => {
 
       {/* Footer - persists across all routes */}
       <Footer />
+
+      {/* Global Snackbar - persists across all routes */}
+      <GlobalSnackbar />
     </Box>
   );
 }

@@ -1,8 +1,24 @@
 import React from "react";
-import { Box, Container, Typography, Link, Divider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Container,
+  Typography,
+  Link,
+  Divider,
+  Button,
+} from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import ApiIcon from "@mui/icons-material/Api";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import HomeIcon from "@mui/icons-material/Home";
+import InfoIcon from "@mui/icons-material/Info";
+import { useAppDispatch } from "../../store";
+import {
+  showSnackbar,
+  SnackbarSeverity,
+} from "../../store/slices/snackbarSlice";
 
 const styles = {
   footer: {
@@ -63,25 +79,117 @@ const styles = {
     gap: 2,
     mt: 2,
   },
+  testButton: {
+    textTransform: "none",
+    borderRadius: 2,
+    px: 2,
+    py: 1,
+  },
+  testButtonGroup: {
+    display: "flex",
+    gap: 1,
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
 };
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const messages = {
+    success: [
+      "Pokemon caught successfully! 🎉",
+      "Data loaded perfectly! ✨",
+      "Operation completed! 🎊",
+      "Great job, Trainer! 🌟",
+      "Mission accomplished! 🏆",
+    ],
+    error: [
+      "Failed to catch Pokemon! ❌",
+      "Connection error occurred! 🔌",
+      "Something went wrong! ⚠️",
+      "Unable to load data! 💥",
+      "Operation failed! 🚫",
+    ],
+    warning: [
+      "Pokemon is already in your collection! ⚡",
+      "Low battery warning! 🔋",
+      "Approaching storage limit! 📦",
+      "Network connection unstable! 📡",
+      "Cache needs clearing! 🗑️",
+    ],
+    info: [
+      "Did you know? Pikachu is the most popular Pokemon! 💡",
+      "Loading Pokemon data... 📊",
+      "Tip: Use search to find Pokemon faster! 🔍",
+      "New features coming soon! 🚀",
+      "Check out the GraphQL API! 📡",
+    ],
+  };
+
+  const handleTestMultiple = () => {
+    // Generate 3 notifications with slight delay
+    const severities: SnackbarSeverity[] = [
+      "success",
+      "error",
+      "warning",
+      "info",
+    ];
+
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        const randomSeverity =
+          severities[Math.floor(Math.random() * severities.length)];
+        const messagesForSeverity = messages[randomSeverity];
+        const randomMessage =
+          messagesForSeverity[
+            Math.floor(Math.random() * messagesForSeverity.length)
+          ];
+
+        dispatch(
+          showSnackbar({
+            message: randomMessage,
+            severity: randomSeverity,
+            autoHideDuration: 10000, // Longer duration to see stacking
+          })
+        );
+      }, i * 100); // 100ms delay between each
+    }
+  };
+
+  const handleTestLongText = () => {
+    dispatch(
+      showSnackbar({
+        message:
+          "This is a very long notification message that demonstrates the expand/collapse functionality. When text exceeds 60 characters, an expand button will appear allowing you to read the full message. This is useful for detailed error messages or important information that needs more space! 🚀",
+        severity: "info",
+        autoHideDuration: 15000,
+      })
+    );
+  };
 
   return (
     <Box component="footer" sx={styles.footer}>
       <Container maxWidth="lg">
         <Box sx={styles.container}>
-          {/* About Section */}
+          {/* Navigation Section */}
           <Box sx={styles.section}>
             <Typography variant="h6" sx={styles.sectionTitle}>
+              Navigation
+            </Typography>
+            <Link
+              onClick={() => navigate("/")}
+              sx={{ ...styles.link, cursor: "pointer" }}
+            >
+              <HomeIcon fontSize="small" />
+              Home
+            </Link>
+            <Link href="#about" sx={styles.link}>
+              <InfoIcon fontSize="small" />
               About
-            </Typography>
-            <Typography variant="body2" color="text.secondary" textAlign={{ xs: "center", md: "left" }}>
-              A modern Pokédex built with React, Redux Toolkit,
-              <br />
-              Material-UI, and GraphQL.
-            </Typography>
+            </Link>
           </Box>
 
           {/* Resources Section */}
@@ -134,6 +242,29 @@ export const Footer: React.FC = () => {
             © {currentYear} Pokédex • Made with{" "}
             <FavoriteIcon sx={styles.heart} /> for Pokémon fans
           </Typography>
+
+          {/* Test Notification Buttons */}
+          <Box sx={styles.testButtonGroup}>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              onClick={handleTestMultiple}
+              sx={styles.testButton}
+            >
+              Test Stack x3
+            </Button>
+            <Button
+              variant="contained"
+              color="info"
+              size="small"
+              onClick={handleTestLongText}
+              sx={styles.testButton}
+            >
+              Test Long Text
+            </Button>
+          </Box>
+
           <Typography variant="body2" color="text.secondary" fontSize="0.75rem">
             Pokémon and Pokémon character names are trademarks of Nintendo.
           </Typography>
@@ -142,4 +273,3 @@ export const Footer: React.FC = () => {
     </Box>
   );
 };
-

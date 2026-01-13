@@ -6,7 +6,6 @@ import {
   TextField,
   Box,
   CircularProgress,
-  Alert,
   InputAdornment,
   ToggleButtonGroup,
   ToggleButton,
@@ -21,7 +20,6 @@ import {
   fetchPokemonList,
   searchPokemon,
   resetPokemonList,
-  clearError,
 } from "../../store/slices/pokemonSlice";
 import { PokemonCard } from "../PokemonCard/PokemonCard";
 import { PokemonCardList } from "../PokemonCard/PokemonCardList";
@@ -31,10 +29,6 @@ import { Pokemon } from "../../types/pokemon.types";
 const styles = {
   container: {
     py: 4,
-  } as SxProps<Theme>,
-
-  errorAlert: {
-    mb: 3,
   } as SxProps<Theme>,
 
   viewToggleContainer: {
@@ -111,7 +105,7 @@ const ITEMS_PER_PAGE = 20;
 export const PokemonList: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { pokemons, loading, error, page, total } = useAppSelector(
+  const { pokemons, loading, page, total } = useAppSelector(
     (state) => state.pokemon
   );
   const [searchTerm, setSearchTerm] = useState("");
@@ -180,11 +174,6 @@ export const PokemonList: React.FC = () => {
     navigate(`/${pokemon.id}`);
   };
 
-  // Handle clear error
-  const handleClearError = () => {
-    dispatch(clearError());
-  };
-
   return (
     <Container maxWidth="lg" sx={styles.container}>
       {/* Search Bar */}
@@ -204,17 +193,6 @@ export const PokemonList: React.FC = () => {
           },
         }}
       />
-
-      {/* Error Alert */}
-      {error && (
-        <Alert
-          severity="error"
-          onClose={handleClearError}
-          sx={styles.errorAlert}
-        >
-          {error}
-        </Alert>
-      )}
 
       {/* Content Wrapper with Loading Overlay */}
       <Box
