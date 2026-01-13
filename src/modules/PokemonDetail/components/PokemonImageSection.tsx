@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Paper } from "@mui/material";
+import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import useEmblaCarousel from "embla-carousel-react";
 import { PokemonImageSectionProps } from "../types/pokemonDetail.types";
 import { imageStyles as styles } from "../styles/imageStyles";
@@ -40,13 +41,18 @@ export const PokemonImageSection: React.FC<PokemonImageSectionProps> = ({
   return (
     <Box sx={pokemonDetailStyles.leftColumn}>
       <Paper elevation={3} sx={styles.imagePaper(types)}>
-        <Box
-          component="img"
-          src={imageUrl}
-          alt={pokemon.name}
-          sx={styles.image}
-          onClick={onImageClick}
-        />
+        <Box sx={styles.imageContainer}>
+          <Box
+            component="img"
+            src={imageUrl}
+            alt={pokemon.name}
+            sx={styles.image}
+            onClick={onImageClick}
+          />
+          <Box sx={styles.magnifierIcon} onClick={onImageClick}>
+            <ZoomInIcon />
+          </Box>
+        </Box>
       </Paper>
       <Box sx={styles.spriteGallery}>
         <Box sx={styles.emblaViewport} ref={emblaRef}>

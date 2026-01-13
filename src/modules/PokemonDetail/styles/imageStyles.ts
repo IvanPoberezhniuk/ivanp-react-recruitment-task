@@ -30,13 +30,40 @@ export const imageStyles = {
     } as SxProps<Theme>;
   },
 
+  imageContainer: {
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  } as SxProps<Theme>,
+
   image: {
-    width: "100%",
-    maxWidth: 240,
-    height: "auto",
-    minHeight: 240,
+    width: 280,
+    minWidth: 280,
+    minHeight: 280,
+    maxHeight: 280,
     filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.3))",
     cursor: "pointer",
+  } as SxProps<Theme>,
+
+  magnifierIcon: {
+    position: "absolute",
+    bottom: 8,
+    right: 8,
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: "50%",
+    width: 36,
+    height: 36,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    color: "#fff",
+    "&:hover": {
+      backgroundColor: "rgba(238, 21, 21, 0.9)",
+      transform: "scale(1.1)",
+    },
   } as SxProps<Theme>,
 
   spriteGallery: {
