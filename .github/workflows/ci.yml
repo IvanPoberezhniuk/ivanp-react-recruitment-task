@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '24'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -52,7 +52,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '24'
           cache: 'pnpm'
 
       - name: Restore cache
@@ -88,7 +88,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '24'
           cache: 'pnpm'
 
       - name: Restore cache
@@ -106,10 +106,10 @@ jobs:
         run: pnpm codegen
 
       - name: Run tests
-        run: pnpm test --run
+        run: pnpm test -- --run
 
       - name: Generate coverage report
-        run: pnpm test:coverage --run
+        run: pnpm test:coverage -- --run
 
       - name: Upload coverage
         uses: actions/upload-artifact@v4
@@ -133,7 +133,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '24'
           cache: 'pnpm'
 
       - name: Restore cache
