@@ -56,15 +56,19 @@ export const scrollbarStyles = {
   },
   medium: {
     "&::-webkit-scrollbar": {
-      width: "8px",
-      height: "8px",
+      width: "10px",
+      height: "10px",
     },
     "&::-webkit-scrollbar-track": {
-      backgroundColor: "transparent",
+      backgroundColor: "rgba(0,0,0,0.05)",
+      borderRadius: "4px",
     },
     "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,0.2)",
+      backgroundColor: "rgba(0,0,0,0.3)",
       borderRadius: "4px",
+      "&:hover": {
+        backgroundColor: "rgba(0,0,0,0.4)",
+      },
     },
   },
 };

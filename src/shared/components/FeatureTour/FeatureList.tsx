@@ -40,7 +40,10 @@ const styles: StylesObject = {
     overflowY: "auto",
     backgroundColor: "background.paper",
     boxShadow: 6,
-    borderRadius: 2,
+    borderTopLeftRadius: 24,
+    borderBottomLeftRadius: 24,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
     ...scrollbarStyles.medium,
   },
   header: {
@@ -70,6 +73,7 @@ const styles: StylesObject = {
   },
   list: {
     p: 0,
+    pr: 0.5,
   },
   listItem: {
     py: 1.5,
