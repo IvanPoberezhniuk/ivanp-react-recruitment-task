@@ -1,12 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Container, Pagination } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../store";
-import { fetchPokemonList } from "../../store/slices/pokemonSlice";
+import { fetchPokemonList, fetchAllTypes } from "../../store/slices/pokemonSlice";
 import { Pokemon } from "../../shared/types/pokemon.types";
 import { StylesObject } from "../../shared/types/styles.types";
-import { getAllTypes } from "../../shared/utils/pokemonUtils";
 import { usePageTitle } from "../../shared/hooks/usePageTitle";
 
 // Feature components
@@ -43,7 +42,7 @@ export const PokemonList: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { pokemons, loading, page, total } = useAppSelector(
+  const { pokemons, loading, page, total, availableTypes } = useAppSelector(
     (state) => state.pokemon
   );
 
@@ -63,7 +62,14 @@ export const PokemonList: React.FC = () => {
     selectedGeneration
   );
 
-  const [showFilters, setShowFilters] = useState(false);
+
+
+  // Fetch all available types on mount
+  useEffect(() => {
+    if (availableTypes.length === 0) {
+      dispatch(fetchAllTypes());
+    }
+  }, [dispatch, availableTypes.length]);
 
   // Fetch initial Pokemon list
   useEffect(() => {
@@ -92,9 +98,6 @@ export const PokemonList: React.FC = () => {
       );
     }
   }, [sortBy, selectedTypes, selectedGeneration]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Get available types from current Pokemon list
-  const availableTypes = useMemo(() => getAllTypes(pokemons), [pokemons]);
 
   // Handle type filter toggle
   const handleTypeToggle = (type: string) => {
@@ -152,13 +155,9 @@ export const PokemonList: React.FC = () => {
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
       />
 
       <FilterPanel
-        showFilters={showFilters}
-        onToggleFilters={() => setShowFilters(!showFilters)}
         activeFilterCount={activeFilterCount}
         selectedTypes={selectedTypes}
         onTypeToggle={handleTypeToggle}
@@ -168,6 +167,8 @@ export const PokemonList: React.FC = () => {
         sortBy={sortBy}
         onSortChange={setSortBy}
         onClearFilters={handleClearFilters}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
       />
 
       {pokemons.length === 0 && !loading ? (

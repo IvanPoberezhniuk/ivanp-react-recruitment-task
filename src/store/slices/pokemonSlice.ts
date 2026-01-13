@@ -198,12 +198,20 @@ export const searchPokemon = createAsyncThunk(
   async (searchTerm: string) => {
     const pattern = `%${searchTerm.toLowerCase()}%`;
     const data = await sdk.SearchPokemon({ searchTerm: pattern });
-    
+
     if (!data.pokemon_v2_pokemon || data.pokemon_v2_pokemon.length === 0) {
       throw new Error('Pokemon not found');
     }
-    
+
     return data.pokemon_v2_pokemon.map(transformPokemon);
+  }
+);
+
+export const fetchAllTypes = createAsyncThunk(
+  'pokemon/fetchAllTypes',
+  async () => {
+    const data = await sdk.GetAllTypes();
+    return data.pokemon_v2_type.map((type) => type.name).filter((name): name is string => !!name);
   }
 );
 
@@ -215,6 +223,7 @@ const initialState: PokemonState = {
   page: 0,
   hasMore: true,
   total: 0,
+  availableTypes: [],
 };
 
 export const pokemonSlice = createSlice({
@@ -282,6 +291,11 @@ export const pokemonSlice = createSlice({
       .addCase(searchPokemon.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Pokemon not found';
+      });
+
+    builder
+      .addCase(fetchAllTypes.fulfilled, (state, action) => {
+        state.availableTypes = action.payload;
       });
   },
 });

@@ -9,7 +9,7 @@ import {
   CardActionArea,
 } from '@mui/material';
 import { Pokemon } from '../../shared/types/pokemon.types';
-import { TYPE_COLORS } from '../../theme/theme';
+import { createTypeChipStyle } from '../../theme/theme';
 import { StylesObject } from '../../shared/types/styles.types';
 import { getPokemonGeneration } from '../../shared/utils/pokemonUtils';
 
@@ -67,12 +67,7 @@ const styles: StylesObject = {
     mb: 1,
   },
 
-  typeChip: (typeName: string) => ({
-    backgroundColor: TYPE_COLORS[typeName] || '#777',
-    color: '#fff',
-    fontWeight: 600,
-    textTransform: 'capitalize',
-  }),
+  typeChip: (typeName: string) => createTypeChipStyle(typeName),
 
   statsContainer: {
     display: 'flex',

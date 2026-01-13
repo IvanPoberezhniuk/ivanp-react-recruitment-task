@@ -1,7 +1,9 @@
-import React from 'react';
-import { Fab, Tooltip, Badge } from '@mui/material';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import { StylesObject } from '../../types/styles.types';
+import React from "react";
+
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
+import { Badge, Fab } from "@mui/material";
+
+import { StylesObject } from "../../types/styles.types";
 
 interface FeatureTourButtonProps {
   onClick: () => void;
@@ -10,39 +12,39 @@ interface FeatureTourButtonProps {
 
 const styles: StylesObject = {
   fab: {
-    position: 'fixed',
+    position: "fixed",
     bottom: 16,
     left: 16,
     zIndex: 1300,
-    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
-    color: 'white',
+    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    color: "white",
     boxShadow: 4,
-    '&:hover': {
-      background: 'linear-gradient(45deg, #1976D2 30%, #00B0D7 90%)',
+    "&:hover": {
+      background: "linear-gradient(45deg, #1976D2 30%, #00B0D7 90%)",
       boxShadow: 6,
-      transform: 'scale(1.05)',
+      transform: "scale(1.05)",
     },
-    transition: 'all 0.3s ease',
+    transition: "all 0.3s ease",
   },
   badge: {
-    '& .MuiBadge-badge': {
-      backgroundColor: '#ff4444',
-      color: 'white',
+    "& .MuiBadge-badge": {
+      backgroundColor: "#ff4444",
+      color: "white",
       fontWeight: 700,
-      fontSize: '0.7rem',
-      animation: 'pulse 2s infinite',
+      fontSize: "0.7rem",
+      animation: "pulse 2s infinite",
     },
-    '@keyframes pulse': {
-      '0%': {
-        transform: 'scale(1)',
+    "@keyframes pulse": {
+      "0%": {
+        transform: "scale(1)",
         opacity: 1,
       },
-      '50%': {
-        transform: 'scale(1.1)',
+      "50%": {
+        transform: "scale(1.1)",
         opacity: 0.8,
       },
-      '100%': {
-        transform: 'scale(1)',
+      "100%": {
+        transform: "scale(1)",
         opacity: 1,
       },
     },
@@ -54,27 +56,20 @@ export const FeatureTourButton: React.FC<FeatureTourButtonProps> = ({
   showBadge,
 }) => {
   return (
-    <Tooltip
-      title="View Feature Highlights"
-      placement="right"
-      arrow
+    <Badge
+      badgeContent="NEW"
+      color="error"
+      invisible={!showBadge}
+      sx={styles.badge}
     >
-      <Badge
-        badgeContent="NEW"
-        color="error"
-        invisible={!showBadge}
-        sx={styles.badge}
+      <Fab
+        color="primary"
+        aria-label="feature tour"
+        onClick={onClick}
+        sx={styles.fab}
       >
-        <Fab
-          color="primary"
-          aria-label="feature tour"
-          onClick={onClick}
-          sx={styles.fab}
-        >
-          <LightbulbIcon />
-        </Fab>
-      </Badge>
-    </Tooltip>
+        <LightbulbIcon />
+      </Fab>
+    </Badge>
   );
 };
-

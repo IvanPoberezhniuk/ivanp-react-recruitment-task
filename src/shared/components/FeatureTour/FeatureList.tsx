@@ -17,6 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import { scrollbarStyles } from "../../../theme/theme";
 import { StylesObject } from "../../types/styles.types";
 import { features } from "./featureData";
 
@@ -40,16 +41,7 @@ const styles: StylesObject = {
     backgroundColor: "background.paper",
     boxShadow: 6,
     borderRadius: 2,
-    "&::-webkit-scrollbar": {
-      width: "8px",
-    },
-    "&::-webkit-scrollbar-track": {
-      backgroundColor: "transparent",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,0.2)",
-      borderRadius: "4px",
-    },
+    ...scrollbarStyles.medium,
   },
   header: {
     p: 2,

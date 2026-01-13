@@ -1,98 +1,168 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 // Shared Pokemon type colors
 export const TYPE_COLORS: Record<string, string> = {
-  normal: '#A8A878',
-  fire: '#F08030',
-  water: '#6890F0',
-  electric: '#F8D030',
-  grass: '#78C850',
-  ice: '#98D8D8',
-  fighting: '#C03028',
-  poison: '#A040A0',
-  ground: '#E0C068',
-  flying: '#A890F0',
-  psychic: '#F85888',
-  bug: '#A8B820',
-  rock: '#B8A038',
-  ghost: '#705898',
-  dragon: '#7038F8',
-  dark: '#705848',
-  steel: '#B8B8D0',
-  fairy: '#EE99AC',
+  normal: "#A8A878",
+  fire: "#F08030",
+  water: "#6890F0",
+  electric: "#F8D030",
+  grass: "#78C850",
+  ice: "#98D8D8",
+  fighting: "#C03028",
+  poison: "#A040A0",
+  ground: "#E0C068",
+  flying: "#A890F0",
+  psychic: "#F85888",
+  bug: "#A8B820",
+  rock: "#B8A038",
+  ghost: "#705898",
+  dragon: "#7038F8",
+  dark: "#705848",
+  steel: "#B8B8D0",
+  fairy: "#EE99AC",
 };
+
+// Reusable scrollbar styles
+export const scrollbarStyles = {
+  thin: {
+    "&::-webkit-scrollbar": {
+      width: "6px",
+      height: "6px",
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "transparent",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,0.2)",
+      borderRadius: "3px",
+    },
+  },
+  light: {
+    "&::-webkit-scrollbar": {
+      width: "6px",
+      height: "6px",
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "rgba(255,255,255,0.1)",
+      borderRadius: "3px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(255,255,255,0.3)",
+      borderRadius: "3px",
+      "&:hover": {
+        backgroundColor: "rgba(255,255,255,0.5)",
+      },
+    },
+  },
+  medium: {
+    "&::-webkit-scrollbar": {
+      width: "8px",
+      height: "8px",
+    },
+    "&::-webkit-scrollbar-track": {
+      backgroundColor: "transparent",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,0.2)",
+      borderRadius: "4px",
+    },
+  },
+};
+
+// Utility function to create type chip styles
+export const createTypeChipStyle = (
+  typeName: string,
+  options?: {
+    fontSize?: string;
+    height?: number | string;
+    selected?: boolean;
+  }
+) => ({
+  backgroundColor: TYPE_COLORS[typeName] || "#777",
+  color: "#fff",
+  fontWeight: 600,
+  textTransform: "capitalize" as const,
+  fontSize: options?.fontSize || "0.75rem",
+  height: options?.height || 28,
+  transition: "all 0.2s ease",
+  ...(options?.selected && {
+    "&:hover": {
+      opacity: 0.8,
+    },
+  }),
+});
 
 // Pokemon-themed color palette
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#EE1515', // Pokemon Red
-      light: '#FF4444',
-      dark: '#CC0000',
-      contrastText: '#FFFFFF',
+      main: "#EE1515", // Pokemon Red
+      light: "#FF4444",
+      dark: "#CC0000",
+      contrastText: "#FFFFFF",
     },
     secondary: {
-      main: '#3B4CCA', // Pokemon Blue
-      light: '#5D6FE8',
-      dark: '#2A3A9F',
-      contrastText: '#FFFFFF',
+      main: "#3B4CCA", // Pokemon Blue
+      light: "#5D6FE8",
+      dark: "#2A3A9F",
+      contrastText: "#FFFFFF",
     },
     background: {
-      default: '#F5F5F5',
-      paper: '#FFFFFF',
+      default: "#F5F5F5",
+      paper: "#FFFFFF",
     },
     text: {
-      primary: '#2C2C2C',
-      secondary: '#666666',
+      primary: "#2C2C2C",
+      secondary: "#666666",
     },
     success: {
-      main: '#4CAF50',
+      main: "#4CAF50",
     },
     warning: {
-      main: '#FFCC00', // Pokemon Yellow
+      main: "#FFCC00", // Pokemon Yellow
     },
     error: {
-      main: '#F44336',
+      main: "#F44336",
     },
   },
   typography: {
     fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
+      "-apple-system",
+      "BlinkMacSystemFont",
       '"Segoe UI"',
-      'Roboto',
+      "Roboto",
       '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-    ].join(','),
+      "Arial",
+      "sans-serif",
+    ].join(","),
     h1: {
-      fontSize: '2.5rem',
+      fontSize: "2.5rem",
       fontWeight: 700,
-      letterSpacing: '-0.01562em',
+      letterSpacing: "-0.01562em",
     },
     h2: {
-      fontSize: '2rem',
+      fontSize: "2rem",
       fontWeight: 600,
-      letterSpacing: '-0.00833em',
+      letterSpacing: "-0.00833em",
     },
     h3: {
-      fontSize: '1.75rem',
+      fontSize: "1.75rem",
       fontWeight: 600,
     },
     h4: {
-      fontSize: '1.5rem',
+      fontSize: "1.5rem",
       fontWeight: 600,
     },
     h5: {
-      fontSize: '1.25rem',
+      fontSize: "1.25rem",
       fontWeight: 500,
     },
     h6: {
-      fontSize: '1rem',
+      fontSize: "1rem",
       fontWeight: 500,
     },
     button: {
-      textTransform: 'none',
+      textTransform: "none",
       fontWeight: 600,
     },
   },
@@ -104,13 +174,13 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 32,
-          padding: '8px 24px',
-          fontSize: '1rem',
+          padding: "8px 24px",
+          fontSize: "1rem",
         },
         contained: {
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+          boxShadow: "none",
+          "&:hover": {
+            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
           },
         },
       },
@@ -119,8 +189,8 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 16,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
         },
       },
     },
@@ -135,7 +205,16 @@ export const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          '& .MuiOutlinedInput-root': {
+          "& .MuiOutlinedInput-root": {
+            borderRadius: 32,
+          },
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-notchedOutline": {
             borderRadius: 32,
           },
         },
@@ -143,4 +222,3 @@ export const theme = createTheme({
     },
   },
 });
-

@@ -1,4 +1,4 @@
-import { TYPE_COLORS } from "../../../theme/theme";
+import { createTypeChipStyle } from "../../../theme/theme";
 import { StylesObject } from "../../../shared/types/styles.types";
 
 export const infoStyles: StylesObject = {
@@ -32,14 +32,8 @@ export const infoStyles: StylesObject = {
   },
 
   typeChip: (typeName: string) => ({
-    backgroundColor: TYPE_COLORS[typeName] || "#777",
-    color: "#fff",
-    fontWeight: 600,
-    fontSize: "0.7rem",
-    textTransform: "capitalize",
+    ...createTypeChipStyle(typeName, { fontSize: "0.7rem", height: 22 }),
     padding: "0 12px",
-    transition: "all 0.2s ease",
-    height: 22,
     maxWidth: 120,
   }),
 

@@ -65,3 +65,11 @@ query SearchPokemon($searchTerm: String!) {
   }
 }
 
+# Query to fetch all available Pokemon types
+query GetAllTypes {
+  pokemon_v2_type(order_by: { name: asc }) {
+    id
+    name
+  }
+}
+

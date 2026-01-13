@@ -1,23 +1,23 @@
-import React from 'react';
+import React from "react";
+
+import GridViewIcon from "@mui/icons-material/GridView";
+import ViewListIcon from "@mui/icons-material/ViewList";
 import {
   Box,
-  Typography,
+  Button,
   Chip,
   FormControl,
-  InputLabel,
-  Select,
   MenuItem,
-  Collapse,
-  Button,
-} from '@mui/material';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import { StylesObject } from '../../../shared/types/styles.types';
-import { GENERATION_RANGES } from '../../../shared/utils/pokemonUtils';
-import { TYPE_COLORS } from '../../../theme/theme';
+  Select,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
+
+import { StylesObject } from "../../../shared/types/styles.types";
+import { GENERATION_RANGES } from "../../../shared/utils/pokemonUtils";
+import { scrollbarStyles, TYPE_COLORS } from "../../../theme/theme";
 
 interface FilterPanelProps {
-  showFilters: boolean;
-  onToggleFilters: () => void;
   activeFilterCount: number;
   selectedTypes: string[];
   onTypeToggle: (type: string) => void;
@@ -27,60 +27,68 @@ interface FilterPanelProps {
   sortBy: string;
   onSortChange: (sort: string) => void;
   onClearFilters: () => void;
+  viewMode: "grid" | "list";
+  onViewModeChange: (mode: "grid" | "list") => void;
 }
 
 const styles: StylesObject = {
-  filterSection: {
-    mb: 3,
-  },
-  filterButton: {
-    mb: 2,
-    textTransform: 'none',
-    justifyContent: 'flex-start',
-    gap: 1,
-  },
   filterPanel: {
-    backgroundColor: 'background.paper',
-    borderRadius: 2,
-    p: 2.5,
-    mb: 3,
-    border: '1px solid',
-    borderColor: 'divider',
-  },
-  filterPanelHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    backgroundColor: "background.paper",
+    borderRadius: "16px",
+    p: { xs: 1.5, sm: 2 },
     mb: 2,
+    border: "1px solid",
+    borderColor: "divider",
   },
-  filterTitle: {
-    fontWeight: 600,
-    fontSize: '0.875rem',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px',
-    color: 'text.secondary',
-  },
-  filterRow: {
-    display: 'flex',
-    gap: 2,
-    mb: 2,
-    flexWrap: 'wrap',
+  topRow: {
+    display: "flex",
+    gap: 1,
+    mb: 1.5,
+    alignItems: "center",
+    flexWrap: "wrap",
   },
   filterControl: {
-    minWidth: 200,
-    flex: 1,
+    minWidth: { sm: 220 },
+    width: { xs: "100%", sm: 220 },
+    flex: { xs: 1, md: "none" },
+    "& .MuiSelect-select": {
+      py: 1,
+      fontSize: "0.875rem",
+    },
+  },
+  viewToggle: {
+    ml: { xs: 0, sm: "auto" },
+  },
+  clearButton: {
+    fontSize: "0.75rem",
+    py: 0.5,
+    px: 1.5,
+    minWidth: "auto",
   },
   typeChipsContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 1,
+    display: "flex",
+    gap: 0.52,
+    flexWrap: { xs: "nowrap", sm: "wrap" },
+    overflowX: { xs: "auto", sm: "visible" },
+    pb: { xs: 0.5, sm: 0 },
+    ...scrollbarStyles.thin,
   },
+  typeChip: (type: string, isSelected: boolean) => ({
+    fontSize: "0.75rem",
+    height: "28px",
+    flexShrink: 0,
+    textTransform: "capitalize",
+    backgroundColor: isSelected
+      ? TYPE_COLORS[type as keyof typeof TYPE_COLORS] || "#777"
+      : "default",
+    color: isSelected ? "white" : "inherit",
+    "&:hover": {
+      opacity: 0.8,
+    },
+  }),
 };
 
 export const FilterPanel: React.FC<FilterPanelProps> = ({
-  showFilters,
-  onToggleFilters,
-  activeFilterCount,
   selectedTypes,
   onTypeToggle,
   availableTypes,
@@ -89,92 +97,80 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   sortBy,
   onSortChange,
   onClearFilters,
+  viewMode,
+  onViewModeChange,
 }) => {
   return (
-    <Box sx={styles.filterSection}>
-      <Button
-        variant="outlined"
-        startIcon={<FilterListIcon />}
-        onClick={onToggleFilters}
-        sx={styles.filterButton}
-        fullWidth
-      >
-        Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
-      </Button>
+    <Box sx={styles.filterPanel}>
+      <Box sx={styles.topRow}>
+        <FormControl sx={styles.filterControl} size="small">
+          <Select
+            value={selectedGeneration}
+            onChange={(e) => onGenerationChange(e.target.value)}
+            displayEmpty
+          >
+            <MenuItem value="All">All Generations</MenuItem>
+            {Object.entries(GENERATION_RANGES).map(([key, value]) => (
+              <MenuItem key={key} value={key}>
+                {value.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-      <Collapse in={showFilters}>
-        <Box sx={styles.filterPanel}>
-          <Box sx={styles.filterPanelHeader}>
-            <Typography sx={styles.filterTitle}>Filter & Sort</Typography>
-            {activeFilterCount > 0 && (
-              <Button size="small" onClick={onClearFilters}>
-                Clear All
-              </Button>
-            )}
-          </Box>
+        <FormControl sx={styles.filterControl} size="small">
+          <Select
+            value={sortBy}
+            onChange={(e) => onSortChange(e.target.value)}
+            displayEmpty
+          >
+            <MenuItem value="id-asc">ID (Low to High)</MenuItem>
+            <MenuItem value="id-desc">ID (High to Low)</MenuItem>
+            <MenuItem value="name-asc">Name (A-Z)</MenuItem>
+            <MenuItem value="name-desc">Name (Z-A)</MenuItem>
+            <MenuItem value="height-asc">Height (Low to High)</MenuItem>
+            <MenuItem value="height-desc">Height (High to Low)</MenuItem>
+            <MenuItem value="weight-asc">Weight (Low to High)</MenuItem>
+            <MenuItem value="weight-desc">Weight (High to Low)</MenuItem>
+          </Select>
+        </FormControl>
 
-          <Box sx={styles.filterRow}>
-            <FormControl sx={styles.filterControl}>
-              <InputLabel>Generation</InputLabel>
-              <Select
-                value={selectedGeneration}
-                label="Generation"
-                onChange={(e) => onGenerationChange(e.target.value)}
-              >
-                <MenuItem value="All">All Generations</MenuItem>
-                {Object.entries(GENERATION_RANGES).map(([key, value]) => (
-                  <MenuItem key={key} value={key}>
-                    {value.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+        <Button
+          size="small"
+          onClick={onClearFilters}
+          sx={styles.clearButton}
+          variant="text"
+        >
+          Clear All
+        </Button>
 
-            <FormControl sx={styles.filterControl}>
-              <InputLabel>Sort By</InputLabel>
-              <Select
-                value={sortBy}
-                label="Sort By"
-                onChange={(e) => onSortChange(e.target.value)}
-              >
-                <MenuItem value="id-asc">ID (Low to High)</MenuItem>
-                <MenuItem value="id-desc">ID (High to Low)</MenuItem>
-                <MenuItem value="name-asc">Name (A-Z)</MenuItem>
-                <MenuItem value="name-desc">Name (Z-A)</MenuItem>
-                <MenuItem value="height-asc">Height (Low to High)</MenuItem>
-                <MenuItem value="height-desc">Height (High to Low)</MenuItem>
-                <MenuItem value="weight-asc">Weight (Low to High)</MenuItem>
-                <MenuItem value="weight-desc">Weight (High to Low)</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
+        <ToggleButtonGroup
+          value={viewMode}
+          exclusive
+          onChange={(_, newMode) => newMode && onViewModeChange(newMode)}
+          size="small"
+          sx={styles.viewToggle}
+        >
+          <ToggleButton value="grid" aria-label="grid view">
+            <GridViewIcon fontSize="small" />
+          </ToggleButton>
+          <ToggleButton value="list" aria-label="list view">
+            <ViewListIcon fontSize="small" />
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
 
-          <Box>
-            <Typography sx={{ ...styles.filterTitle, mb: 1.5 }}>
-              Type
-            </Typography>
-            <Box sx={styles.typeChipsContainer}>
-              {availableTypes.map((type) => (
-                <Chip
-                  key={type}
-                  label={type}
-                  onClick={() => onTypeToggle(type)}
-                  sx={{
-                    backgroundColor: selectedTypes.includes(type)
-                      ? TYPE_COLORS[type as keyof typeof TYPE_COLORS] || '#777'
-                      : 'default',
-                    color: selectedTypes.includes(type) ? 'white' : 'inherit',
-                    '&:hover': {
-                      opacity: 0.8,
-                    },
-                  }}
-                />
-              ))}
-            </Box>
-          </Box>
-        </Box>
-      </Collapse>
+      <Box sx={styles.typeChipsContainer}>
+        {availableTypes.map((type) => (
+          <Chip
+            key={type}
+            label={type}
+            onClick={() => onTypeToggle(type)}
+            size="small"
+            sx={styles.typeChip(type, selectedTypes.includes(type))}
+          />
+        ))}
+      </Box>
     </Box>
   );
 };
-

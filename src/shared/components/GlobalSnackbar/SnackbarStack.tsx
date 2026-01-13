@@ -8,6 +8,7 @@ import { Alert, AlertColor, Box, IconButton } from "@mui/material";
 import { useAppDispatch } from "../../../store";
 import { removeSnackbar, SnackbarItem } from "../../../store/slices/snackbarSlice";
 import { StylesObject } from "../../types/styles.types";
+import { scrollbarStyles } from "../../../theme/theme";
 
 const styles: StylesObject = {
   container: {
@@ -205,20 +206,7 @@ export const SnackbarStack: React.FC<SnackbarStackProps> = ({
                     overflowY: isExpanded ? "auto" : "hidden",
                     maxHeight: isExpanded ? "350px" : "60px",
                     pr: 1,
-                    "&::-webkit-scrollbar": {
-                      width: "6px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      backgroundColor: "rgba(255,255,255,0.1)",
-                      borderRadius: "3px",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      backgroundColor: "rgba(255,255,255,0.3)",
-                      borderRadius: "3px",
-                      "&:hover": {
-                        backgroundColor: "rgba(255,255,255,0.5)",
-                      },
-                    },
+                    ...scrollbarStyles.light,
                   }}
                 >
                   {notification.message}
