@@ -115,6 +115,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 {value.label}
               </MenuItem>
             ))}
+            <MenuItem value="Unknown">Unknown</MenuItem>
           </Select>
         </FormControl>
 

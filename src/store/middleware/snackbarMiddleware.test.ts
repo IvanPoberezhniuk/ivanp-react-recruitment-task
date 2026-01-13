@@ -75,7 +75,7 @@ describe('snackbarMiddleware', () => {
   it('dispatches snackbar on searchPokemon.rejected', async () => {
     const store = createTestStore();
 
-    await store.dispatch(searchPokemon('nonexistent'));
+    await store.dispatch(searchPokemon({ searchTerm: 'nonexistent' }));
 
     const state = store.getState();
     expect(state.snackbar.notifications).toHaveLength(1);
@@ -88,7 +88,7 @@ describe('snackbarMiddleware', () => {
 
     await store.dispatch(fetchPokemonList({ page: 0 }));
     await store.dispatch(fetchPokemonById(999));
-    await store.dispatch(searchPokemon('test'));
+    await store.dispatch(searchPokemon({ searchTerm: 'test' }));
 
     const state = store.getState();
     expect(state.snackbar.notifications).toHaveLength(3);

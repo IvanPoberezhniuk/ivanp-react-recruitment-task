@@ -28,7 +28,12 @@ export const useSearchDebounce = (
       const timeout = setTimeout(() => {
         if (value.trim()) {
           dispatch(resetPokemonList());
-          dispatch(searchPokemon(value.trim()));
+          dispatch(searchPokemon({
+            searchTerm: value.trim(),
+            sortBy,
+            selectedTypes,
+            selectedGeneration,
+          }));
         } else {
           dispatch(resetPokemonList());
           dispatch(

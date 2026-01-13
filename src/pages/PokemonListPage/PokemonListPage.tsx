@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Container, Pagination } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../store";
-import { fetchPokemonList, fetchAllTypes } from "../../store/slices/pokemonSlice";
+import { fetchPokemonList, fetchAllTypes, searchPokemon } from "../../store/slices/pokemonSlice";
 import { Pokemon } from "../../shared/types/pokemon.types";
 import { StylesObject } from "../../shared/types/styles.types";
 import { usePageTitle } from "../../shared/hooks/usePageTitle";
@@ -71,31 +71,42 @@ export const PokemonList: React.FC = () => {
     }
   }, [dispatch, availableTypes.length]);
 
-  // Fetch initial Pokemon list
+  // Fetch initial Pokemon list on mount only
   useEffect(() => {
-    if (pokemons.length === 0) {
-      dispatch(
-        fetchPokemonList({
-          page: 0,
-          sortBy,
-          selectedTypes,
-          selectedGeneration,
-        })
-      );
-    }
-  }, [dispatch, pokemons.length, sortBy, selectedTypes, selectedGeneration]);
+    dispatch(
+      fetchPokemonList({
+        page: 0,
+        sortBy,
+        selectedTypes,
+        selectedGeneration,
+      })
+    );
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Refetch when filters or sort changes
   useEffect(() => {
-    if (!searchTerm && pokemons.length > 0) {
-      dispatch(
-        fetchPokemonList({
-          page: 0,
-          sortBy,
-          selectedTypes,
-          selectedGeneration,
-        })
-      );
+    if (pokemons.length > 0) {
+      if (searchTerm) {
+        // If search is active, re-run search with new filters
+        dispatch(
+          searchPokemon({
+            searchTerm: searchTerm.trim(),
+            sortBy,
+            selectedTypes,
+            selectedGeneration,
+          })
+        );
+      } else {
+        // If no search, fetch with filters
+        dispatch(
+          fetchPokemonList({
+            page: 0,
+            sortBy,
+            selectedTypes,
+            selectedGeneration,
+          })
+        );
+      }
     }
   }, [sortBy, selectedTypes, selectedGeneration]); // eslint-disable-line react-hooks/exhaustive-deps
 

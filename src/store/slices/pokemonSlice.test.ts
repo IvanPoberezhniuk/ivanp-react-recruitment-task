@@ -193,7 +193,7 @@ describe('pokemonSlice', () => {
 
   describe('extraReducers - searchPokemon', () => {
     it('sets loading to true on pending', () => {
-      const state = pokemonReducer(initialState, searchPokemon.pending('', 'pikachu'));
+      const state = pokemonReducer(initialState, searchPokemon.pending('', { searchTerm: 'pikachu' }));
       expect(state.loading).toBe(true);
       expect(state.error).toBeNull();
     });

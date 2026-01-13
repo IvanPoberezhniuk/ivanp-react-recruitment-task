@@ -171,6 +171,17 @@ describe('pokemonUtils', () => {
       expect(result[0].name).toBe('treecko');
     });
 
+    it('filters pokemon by Unknown generation', () => {
+      const unknownPokemon = [
+        ...mockPokemon,
+        { id: 0, name: 'invalid-low', url: '', types: [] } as Pokemon,
+        { id: 1026, name: 'invalid-high', url: '', types: [] } as Pokemon,
+      ];
+      const result = filterByGeneration(unknownPokemon, 'Unknown');
+      expect(result).toHaveLength(2);
+      expect(result.map(p => p.name)).toEqual(['invalid-low', 'invalid-high']);
+    });
+
     it('returns all pokemon for invalid generation', () => {
       const result = filterByGeneration(mockPokemon, 'Invalid Gen');
       expect(result).toEqual(mockPokemon);

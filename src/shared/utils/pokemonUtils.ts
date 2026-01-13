@@ -62,10 +62,17 @@ export const filterByGeneration = (
   generation: string | null
 ): Pokemon[] => {
   if (!generation || generation === "All") return pokemons;
-  
+
+  // Handle "Unknown" generation
+  if (generation === "Unknown") {
+    return pokemons.filter(
+      (pokemon) => pokemon.id < 1 || pokemon.id > 1025
+    );
+  }
+
   const range = GENERATION_RANGES[generation as GenerationKey];
   if (!range) return pokemons;
-  
+
   return pokemons.filter(
     (pokemon) => pokemon.id >= range.min && pokemon.id <= range.max
   );

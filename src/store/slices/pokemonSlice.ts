@@ -131,12 +131,21 @@ const buildWhereClause = (
 
   // Filter by generation (ID range)
   if (selectedGeneration !== 'All') {
-    const range = GENERATION_RANGES[selectedGeneration as keyof typeof GENERATION_RANGES];
-    if (range) {
-      conditions.id = {
-        _gte: range.min,
-        _lte: range.max
-      };
+    if (selectedGeneration === 'Unknown') {
+      // Unknown generation: Pokemon with ID outside all defined ranges
+      // This means ID < 1 or ID > 1025
+      conditions._or = [
+        { id: { _lt: 1 } },
+        { id: { _gt: 1025 } }
+      ];
+    } else {
+      const range = GENERATION_RANGES[selectedGeneration as keyof typeof GENERATION_RANGES];
+      if (range) {
+        conditions.id = {
+          _gte: range.min,
+          _lte: range.max
+        };
+      }
     }
   }
 
@@ -193,14 +202,40 @@ export const fetchPokemonById = createAsyncThunk(
   }
 );
 
+export interface SearchPokemonParams {
+  searchTerm: string;
+  sortBy?: string;
+  selectedTypes?: string[];
+  selectedGeneration?: string;
+}
+
 export const searchPokemon = createAsyncThunk(
   'pokemon/searchPokemon',
-  async (searchTerm: string) => {
-    const pattern = `%${searchTerm.toLowerCase()}%`;
-    const data = await sdk.SearchPokemon({ searchTerm: pattern });
+  async (params: SearchPokemonParams) => {
+    const {
+      searchTerm,
+      sortBy = 'id-asc',
+      selectedTypes = [],
+      selectedGeneration = 'All'
+    } = params;
 
+    const pattern = `%${searchTerm.toLowerCase()}%`;
+
+    // Combine search with other filters
+    const baseWhereClause = buildWhereClause(selectedTypes, selectedGeneration);
+    const whereClause = {
+      ...baseWhereClause,
+      name: { _ilike: pattern }
+    };
+
+    const data = await sdk.SearchPokemon({
+      orderBy: getSortOrderBy(sortBy),
+      where: whereClause
+    });
+
+    // Return empty array if no results found (don't throw error)
     if (!data.pokemon_v2_pokemon || data.pokemon_v2_pokemon.length === 0) {
-      throw new Error('Pokemon not found');
+      return [];
     }
 
     return data.pokemon_v2_pokemon.map(transformPokemon);
