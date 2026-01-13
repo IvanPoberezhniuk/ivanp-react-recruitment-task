@@ -22,13 +22,13 @@ export const PokemonListExample: React.FC = () => {
 
   // Fetch initial Pokemon list on component mount
   useEffect(() => {
-    dispatch(fetchPokemonList(0));
+    dispatch(fetchPokemonList({ page: 0 }));
   }, [dispatch]);
 
   // Handler to load more Pokemon
   const handleLoadMore = () => {
     if (!loading && hasMore) {
-      dispatch(fetchPokemonList(page + 1));
+      dispatch(fetchPokemonList({ page: page + 1 }));
     }
   };
 
@@ -44,7 +44,7 @@ export const PokemonListExample: React.FC = () => {
       dispatch(searchPokemon(searchTerm));
     } else {
       dispatch(resetPokemonList());
-      dispatch(fetchPokemonList(0));
+      dispatch(fetchPokemonList({ page: 0 }));
     }
   };
 

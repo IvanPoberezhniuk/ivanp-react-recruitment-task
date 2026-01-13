@@ -1,10 +1,19 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Pokemon, PokemonState } from '../../types/pokemon.types';
 import { graphqlClient } from '../../services/graphqlClient';
-import { getSdk } from '../../generated/graphql';
+import { getSdk, Pokemon_V2_Pokemon_Order_By, Order_By, Pokemon_V2_Pokemon_Bool_Exp } from '../../generated/graphql';
+import { GENERATION_RANGES } from '../../utils/pokemonUtils';
 
 const LIMIT = 20;
 const sdk = getSdk(graphqlClient);
+
+// Type for fetch parameters
+export interface FetchPokemonListParams {
+  page?: number;
+  sortBy?: string;
+  selectedTypes?: string[];
+  selectedGeneration?: string;
+}
 
 const transformPokemon = (gqlPokemon: any): Pokemon => {
   const spritesData = gqlPokemon.pokemon_v2_pokemonsprites?.[0]?.sprites || {};
@@ -85,14 +94,71 @@ const transformPokemon = (gqlPokemon: any): Pokemon => {
   };
 };
 
+// Helper function to convert sortBy string to GraphQL order_by
+const getSortOrderBy = (sortBy: string = 'id-asc'): Pokemon_V2_Pokemon_Order_By[] => {
+  const [field, direction] = sortBy.split('-');
+  const order: Order_By = direction === 'desc' ? Order_By.Desc : Order_By.Asc;
+
+  switch (field) {
+    case 'id':
+      return [{ id: order }];
+    case 'name':
+      return [{ name: order }];
+    case 'height':
+      return [{ height: order }];
+    case 'weight':
+      return [{ weight: order }];
+    default:
+      return [{ id: Order_By.Asc }];
+  }
+};
+
+// Helper function to build where clause for filtering
+const buildWhereClause = (
+  selectedTypes: string[] = [],
+  selectedGeneration: string = 'All'
+): Pokemon_V2_Pokemon_Bool_Exp => {
+  const conditions: any = {};
+
+  // Filter by type
+  if (selectedTypes.length > 0) {
+    conditions.pokemon_v2_pokemontypes = {
+      pokemon_v2_type: {
+        name: { _in: selectedTypes }
+      }
+    };
+  }
+
+  // Filter by generation (ID range)
+  if (selectedGeneration !== 'All') {
+    const range = GENERATION_RANGES[selectedGeneration as keyof typeof GENERATION_RANGES];
+    if (range) {
+      conditions.id = {
+        _gte: range.min,
+        _lte: range.max
+      };
+    }
+  }
+
+  return conditions;
+};
+
 export const fetchPokemonList = createAsyncThunk(
   'pokemon/fetchPokemonList',
-  async (page: number = 0) => {
+  async (params: FetchPokemonListParams = {}) => {
+    const {
+      page = 0,
+      sortBy = 'id-asc',
+      selectedTypes = [],
+      selectedGeneration = 'All'
+    } = params;
     const offset = page * LIMIT;
 
     const data = await sdk.GetPokemonList({
       limit: LIMIT,
       offset: offset,
+      orderBy: getSortOrderBy(sortBy),
+      where: buildWhereClause(selectedTypes, selectedGeneration),
     });
 
     const pokemons = data.pokemon_v2_pokemon.map(transformPokemon);

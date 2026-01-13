@@ -11,6 +11,7 @@ import {
 import { Pokemon } from '../../types/pokemon.types';
 import { TYPE_COLORS } from '../../theme/theme';
 import { StylesObject } from '../../types/styles.types';
+import { getPokemonGeneration } from '../../utils/pokemonUtils';
 
 interface PokemonCardListProps {
   pokemon: Pokemon;
@@ -145,30 +146,36 @@ export const PokemonCardList: React.FC<PokemonCardListProps> = ({ pokemon, onCli
             </Box>
           )}
 
-          {(pokemon.height || pokemon.weight) && (
-            <Box sx={styles.statsContainer}>
-              {pokemon.height && (
-                <Box sx={styles.statBox}>
-                  <Typography variant="caption" color="text.secondary" sx={styles.statLabel}>
-                    Height
-                  </Typography>
-                  <Typography variant="body1" sx={styles.statValue}>
-                    {(pokemon.height / 10).toFixed(1)} m
-                  </Typography>
-                </Box>
-              )}
-              {pokemon.weight && (
-                <Box sx={styles.statBox}>
-                  <Typography variant="caption" color="text.secondary" sx={styles.statLabel}>
-                    Weight
-                  </Typography>
-                  <Typography variant="body1" sx={styles.statValue}>
-                    {(pokemon.weight / 10).toFixed(1)} kg
-                  </Typography>
-                </Box>
-              )}
+          <Box sx={styles.statsContainer}>
+            <Box sx={styles.statBox}>
+              <Typography variant="caption" color="text.secondary" sx={styles.statLabel}>
+                Gen
+              </Typography>
+              <Typography variant="body1" sx={styles.statValue}>
+                {getPokemonGeneration(pokemon.id)}
+              </Typography>
             </Box>
-          )}
+            {pokemon.height && (
+              <Box sx={styles.statBox}>
+                <Typography variant="caption" color="text.secondary" sx={styles.statLabel}>
+                  Height
+                </Typography>
+                <Typography variant="body1" sx={styles.statValue}>
+                  {(pokemon.height / 10).toFixed(1)} m
+                </Typography>
+              </Box>
+            )}
+            {pokemon.weight && (
+              <Box sx={styles.statBox}>
+                <Typography variant="caption" color="text.secondary" sx={styles.statLabel}>
+                  Weight
+                </Typography>
+                <Typography variant="body1" sx={styles.statValue}>
+                  {(pokemon.weight / 10).toFixed(1)} kg
+                </Typography>
+              </Box>
+            )}
+          </Box>
         </CardContent>
       </CardActionArea>
     </Card>
