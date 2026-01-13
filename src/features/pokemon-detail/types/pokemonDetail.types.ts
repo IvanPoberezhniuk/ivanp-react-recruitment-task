@@ -1,4 +1,4 @@
-import { Pokemon } from "../../../types/pokemon.types";
+import { Pokemon } from "../../../shared/types/pokemon.types";
 
 // Component Props Types
 

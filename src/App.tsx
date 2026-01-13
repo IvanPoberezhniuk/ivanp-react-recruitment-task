@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
-import { PokemonList } from "../PokemonList/PokemonList";
-import { PokemonDetailPage } from "../PokemonDetail/PokemonDetailPage";
-import { Header } from "../../components/Header/Header";
-import { Footer } from "../../components/Footer/Footer";
-import { GlobalSnackbar } from "../../components/GlobalSnackbar";
-import { StylesObject } from "../../types/styles.types";
+import { PokemonListPage } from "./pages/PokemonListPage";
+import { PokemonDetailPage } from "./pages/PokemonDetailPage";
+import { Header } from "./shared/components/Header/Header";
+import { Footer } from "./shared/components/Footer/Footer";
+import { GlobalSnackbar } from "./shared/components/GlobalSnackbar";
+import { StylesObject } from "./shared/types/styles.types";
 
 const styles: StylesObject = {
   root: {
@@ -30,7 +30,7 @@ export const App = () => {
       {/* Main Content Area */}
       <Box component="main" sx={styles.main}>
         <Routes>
-          <Route path="/" element={<PokemonList />} />
+          <Route path="/" element={<PokemonListPage />} />
           <Route path="/:id" element={<PokemonDetailPage />} />
         </Routes>
       </Box>
@@ -43,3 +43,4 @@ export const App = () => {
     </Box>
   );
 }
+

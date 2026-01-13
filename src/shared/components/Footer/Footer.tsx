@@ -14,11 +14,11 @@ import ApiIcon from "@mui/icons-material/Api";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch } from "../../../store";
 import {
   showSnackbar,
   SnackbarSeverity,
-} from "../../store/slices/snackbarSlice";
+} from "../../../store/slices/snackbarSlice";
 import { StylesObject } from "../../types/styles.types";
 
 const styles: StylesObject = {

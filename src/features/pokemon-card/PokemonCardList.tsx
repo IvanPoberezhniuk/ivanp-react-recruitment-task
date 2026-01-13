@@ -8,10 +8,10 @@ import {
   Box,
   CardActionArea,
 } from '@mui/material';
-import { Pokemon } from '../../types/pokemon.types';
+import { Pokemon } from '../../shared/types/pokemon.types';
 import { TYPE_COLORS } from '../../theme/theme';
-import { StylesObject } from '../../types/styles.types';
-import { getPokemonGeneration } from '../../utils/pokemonUtils';
+import { StylesObject } from '../../shared/types/styles.types';
+import { getPokemonGeneration } from '../../shared/utils/pokemonUtils';
 
 interface PokemonCardListProps {
   pokemon: Pokemon;

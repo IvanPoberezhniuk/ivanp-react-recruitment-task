@@ -32,16 +32,16 @@ import {
   resetPokemonList,
   searchPokemon,
 } from "../../store/slices/pokemonSlice";
-import { Pokemon } from "../../types/pokemon.types";
-import { StylesObject } from "../../types/styles.types";
-import { PokemonCard } from "../PokemonCard/PokemonCard";
-import { PokemonCardList } from "../PokemonCard/PokemonCardList";
+import { Pokemon } from "../../shared/types/pokemon.types";
+import { StylesObject } from "../../shared/types/styles.types";
+import { PokemonCard } from "../../features/pokemon-card/PokemonCard";
+import { PokemonCardList } from "../../features/pokemon-card/PokemonCardList";
 import {
   getAllTypes,
   GENERATION_RANGES,
-} from "../../utils/pokemonUtils";
+} from "../../shared/utils/pokemonUtils";
 import { TYPE_COLORS } from "../../theme/theme";
-import { usePageTitle } from "../../hooks/usePageTitle";
+import { usePageTitle } from "../../shared/hooks/usePageTitle";
 
 // Styles constant
 const styles: StylesObject = {

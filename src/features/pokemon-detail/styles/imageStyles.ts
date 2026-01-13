@@ -1,5 +1,5 @@
 import { TYPE_COLORS } from "../../../theme/theme";
-import { StylesObject } from "../../../types/styles.types";
+import { StylesObject } from "../../../shared/types/styles.types";
 
 export const imageStyles: StylesObject = {
   imagePaper: (types: string[]) => {

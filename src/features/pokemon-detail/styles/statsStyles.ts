@@ -1,4 +1,4 @@
-import { StylesObject } from "../../../types/styles.types";
+import { StylesObject } from "../../../shared/types/styles.types";
 
 export const statsStyles: StylesObject = {
   statsRow: {

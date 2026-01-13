@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { Pokemon, PokemonState } from '../../types/pokemon.types';
+import { Pokemon, PokemonState } from '../../shared/types/pokemon.types';
 import { graphqlClient } from '../../services/graphqlClient';
 import { getSdk, Pokemon_V2_Pokemon_Order_By, Order_By, Pokemon_V2_Pokemon_Bool_Exp } from '../../generated/graphql';
-import { GENERATION_RANGES } from '../../utils/pokemonUtils';
+import { GENERATION_RANGES } from '../../shared/utils/pokemonUtils';
 
 const LIMIT = 20;
 const sdk = getSdk(graphqlClient);

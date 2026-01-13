@@ -24,17 +24,17 @@ import {
   clearSelectedPokemon,
   fetchPokemonById,
 } from "../../store/slices/pokemonSlice";
-import { usePageTitle } from "../../hooks/usePageTitle";
+import { usePageTitle } from "../../shared/hooks/usePageTitle";
 
-import { PokemonHeader } from "./components/PokemonHeader";
-import { PokemonImageSection } from "./components/PokemonImageSection";
-import { PokemonInfo } from "./components/PokemonInfo";
-import { BattleStats } from "./components/BattleStats";
-import { LearnableMoves } from "./components/LearnableMoves";
-import { GameAppearances } from "./components/GameAppearances";
-import { LightboxSlide } from "./types/pokemonDetail.types";
-import { pokemonDetailStyles as styles } from "./styles/pokemonDetailStyles";
-import { statsStyles } from "./styles/statsStyles";
+import { PokemonHeader } from "../../features/pokemon-detail/components/PokemonHeader";
+import { PokemonImageSection } from "../../features/pokemon-detail/components/PokemonImageSection";
+import { PokemonInfo } from "../../features/pokemon-detail/components/PokemonInfo";
+import { BattleStats } from "../../features/pokemon-detail/components/BattleStats";
+import { LearnableMoves } from "../../features/pokemon-detail/components/LearnableMoves";
+import { GameAppearances } from "../../features/pokemon-detail/components/GameAppearances";
+import { LightboxSlide } from "../../features/pokemon-detail/types/pokemonDetail.types";
+import { pokemonDetailStyles as styles } from "../../features/pokemon-detail/styles/pokemonDetailStyles";
+import { statsStyles } from "../../features/pokemon-detail/styles/statsStyles";
 
 export const PokemonDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

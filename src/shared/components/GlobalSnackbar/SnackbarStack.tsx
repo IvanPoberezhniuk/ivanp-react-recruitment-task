@@ -5,8 +5,8 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Alert, AlertColor, Box, IconButton } from "@mui/material";
 
-import { useAppDispatch } from "../../store";
-import { removeSnackbar, SnackbarItem } from "../../store/slices/snackbarSlice";
+import { useAppDispatch } from "../../../store";
+import { removeSnackbar, SnackbarItem } from "../../../store/slices/snackbarSlice";
 import { StylesObject } from "../../types/styles.types";
 
 const styles: StylesObject = {

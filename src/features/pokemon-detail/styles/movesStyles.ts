@@ -1,5 +1,5 @@
 import { GAME_COLORS } from "../../../constants/gameColors";
-import { StylesObject } from "../../../types/styles.types";
+import { StylesObject } from "../../../shared/types/styles.types";
 
 export const movesStyles: StylesObject = {
   movesContainer: {

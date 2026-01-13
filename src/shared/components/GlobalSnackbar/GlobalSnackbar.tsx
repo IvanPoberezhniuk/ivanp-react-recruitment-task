@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppSelector } from '../../store';
+import { useAppSelector } from '../../../store';
 import { SnackbarStack } from './SnackbarStack';
 
 export const GlobalSnackbar: React.FC = () => {
