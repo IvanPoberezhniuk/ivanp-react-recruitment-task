@@ -49,7 +49,8 @@ export const PokemonDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchPokemonById(id));
+      const pokemonId = !isNaN(Number(id)) ? Number(id) : id;
+      dispatch(fetchPokemonById(pokemonId));
     }
 
     return () => {

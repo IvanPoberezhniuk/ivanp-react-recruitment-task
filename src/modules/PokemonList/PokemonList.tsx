@@ -98,6 +98,30 @@ const styles = {
     // CircularProgress size handled by component prop
   },
 
+  loadingOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: (theme: Theme) =>
+      theme.palette.mode === "dark"
+        ? "rgba(0, 0, 0, 0.7)"
+        : "rgba(255, 255, 255, 0.7)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 9999,
+    pointerEvents: "all",
+  } as SxProps<Theme>,
+
+  contentWrapper: {
+    position: "relative",
+    pointerEvents: (loading: boolean) => (loading ? "none" : "auto"),
+    opacity: (loading: boolean) => (loading ? 0.5 : 1),
+    transition: "opacity 0.3s ease",
+  } as SxProps<Theme>,
+
   paginationBox: {
     display: "flex",
     justifyContent: "center",
@@ -235,58 +259,53 @@ export const PokemonList: React.FC = () => {
         </Alert>
       )}
 
-      {/* View Mode Toggle */}
-      <Box sx={styles.viewToggleContainer}>
-        <ToggleButtonGroup
-          value={viewMode}
-          exclusive
-          onChange={(_, newView) => {
-            if (newView !== null) {
-              setViewMode(newView);
-            }
-          }}
-          aria-label="view mode"
-        >
-          <ToggleButton value="grid" aria-label="grid view">
-            <GridViewIcon sx={{ mr: 1 }} />
-            Grid
-          </ToggleButton>
-          <ToggleButton value="list" aria-label="list view">
-            <ViewListIcon sx={{ mr: 1 }} />
-            List
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Box>
-
-      {/* Pokemon Grid */}
-      <Box
-        sx={viewMode === "grid" ? styles.gridContainer : styles.listContainer}
-      >
-        {pokemons.map((pokemon) => (
-          <Box key={pokemon.id}>
-            {viewMode === "grid" ? (
-              <PokemonCard pokemon={pokemon} onClick={handlePokemonClick} />
-            ) : (
-              <PokemonCardList pokemon={pokemon} onClick={handlePokemonClick} />
-            )}
-          </Box>
-        ))}
-      </Box>
-
-      {/* Loading Indicator */}
-      {loading && (
-        <Box sx={styles.loadingBox}>
-          <CircularProgress size={48} />
+      {/* Content Wrapper with Loading Overlay */}
+      <Box sx={{ ...styles.contentWrapper, pointerEvents: loading ? "none" : "auto", opacity: loading ? 0.5 : 1 }}>
+        {/* View Mode Toggle */}
+        <Box sx={styles.viewToggleContainer}>
+          <ToggleButtonGroup
+            value={viewMode}
+            exclusive
+            onChange={(_, newView) => {
+              if (newView !== null) {
+                setViewMode(newView);
+              }
+            }}
+            aria-label="view mode"
+          >
+            <ToggleButton value="grid" aria-label="grid view">
+              <GridViewIcon sx={{ mr: 1 }} />
+              Grid
+            </ToggleButton>
+            <ToggleButton value="list" aria-label="list view">
+              <ViewListIcon sx={{ mr: 1 }} />
+              List
+            </ToggleButton>
+          </ToggleButtonGroup>
         </Box>
-      )}
 
-      {/* Pagination */}
-      {!loading && !searchTerm && pokemons.length > 0 && totalPages > 1 && (
-        <Box sx={styles.paginationBox}>
-          <Pagination
-            count={totalPages}
-            page={page + 1}
-            onChange={handlePageChange}
+        {/* Pokemon Grid */}
+        <Box
+          sx={viewMode === "grid" ? styles.gridContainer : styles.listContainer}
+        >
+          {pokemons.map((pokemon) => (
+            <Box key={pokemon.id}>
+              {viewMode === "grid" ? (
+                <PokemonCard pokemon={pokemon} onClick={handlePokemonClick} />
+              ) : (
+                <PokemonCardList pokemon={pokemon} onClick={handlePokemonClick} />
+              )}
+            </Box>
+          ))}
+        </Box>
+
+        {/* Pagination */}
+        {!searchTerm && pokemons.length > 0 && totalPages > 1 && (
+          <Box sx={styles.paginationBox}>
+            <Pagination
+              count={totalPages}
+              page={page + 1}
+              onChange={handlePageChange}
             color="primary"
             size="large"
             showFirstButton
@@ -297,12 +316,20 @@ export const PokemonList: React.FC = () => {
         </Box>
       )}
 
-      {/* No Results */}
-      {!loading && pokemons.length === 0 && (
-        <Box sx={styles.noResultsBox}>
-          <Typography variant="h5" color="text.secondary">
-            No Pokemon found
-          </Typography>
+        {/* No Results */}
+        {pokemons.length === 0 && (
+          <Box sx={styles.noResultsBox}>
+            <Typography variant="h5" color="text.secondary">
+              No Pokemon found
+            </Typography>
+          </Box>
+        )}
+      </Box>
+
+      {/* Loading Overlay */}
+      {loading && (
+        <Box sx={styles.loadingOverlay}>
+          <CircularProgress size={64} thickness={4} />
         </Box>
       )}
     </Container>

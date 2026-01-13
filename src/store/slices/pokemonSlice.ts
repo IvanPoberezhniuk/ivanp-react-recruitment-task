@@ -1,60 +1,113 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { Pokemon, PokemonListResponse, PokemonState } from '../../types/pokemon.types';
+import { Pokemon, PokemonState } from '../../types/pokemon.types';
+import { graphqlClient } from '../../services/graphqlClient';
+import { getSdk } from '../../generated/graphql';
 
-const POKEMON_API_BASE = 'https://pokeapi.co/api/v2';
 const LIMIT = 20;
+const sdk = getSdk(graphqlClient);
 
-// Async thunk for fetching Pokemon list
+// Helper function to transform GraphQL Pokemon to REST-like Pokemon
+const transformPokemon = (gqlPokemon: any): Pokemon => {
+  return {
+    id: gqlPokemon.id,
+    name: gqlPokemon.name,
+    url: `https://pokeapi.co/api/v2/pokemon/${gqlPokemon.id}/`,
+    height: gqlPokemon.height,
+    weight: gqlPokemon.weight,
+    base_experience: gqlPokemon.base_experience,
+    types: gqlPokemon.pokemon_v2_pokemontypes?.map((pt: any) => ({
+      slot: 0,
+      type: {
+        name: pt.pokemon_v2_type?.name || '',
+        url: `https://pokeapi.co/api/v2/type/${pt.pokemon_v2_type?.id}/`,
+      },
+    })) || [],
+    sprites: {
+      front_default: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${gqlPokemon.id}.png`,
+    },
+    stats: gqlPokemon.pokemon_v2_pokemonstats?.map((ps: any) => ({
+      base_stat: ps.base_stat,
+      effort: ps.effort,
+      stat: {
+        name: ps.pokemon_v2_stat?.name || '',
+        url: `https://pokeapi.co/api/v2/stat/${ps.pokemon_v2_stat?.id}/`,
+      },
+    })) || [],
+    abilities: gqlPokemon.pokemon_v2_pokemonabilities?.map((pa: any) => ({
+      is_hidden: pa.is_hidden,
+      slot: pa.slot,
+      ability: {
+        name: pa.pokemon_v2_ability?.name || '',
+        url: `https://pokeapi.co/api/v2/ability/${pa.pokemon_v2_ability?.id}/`,
+      },
+    })) || [],
+    species: gqlPokemon.pokemon_v2_pokemonspecy ? {
+      name: gqlPokemon.pokemon_v2_pokemonspecy.name,
+      url: `https://pokeapi.co/api/v2/pokemon-species/${gqlPokemon.pokemon_v2_pokemonspecy.id}/`,
+    } : undefined,
+  };
+};
+
+// Async thunk for fetching Pokemon list using GraphQL
 export const fetchPokemonList = createAsyncThunk(
   'pokemon/fetchPokemonList',
   async (page: number = 0) => {
     const offset = page * LIMIT;
-    const response = await fetch(`${POKEMON_API_BASE}/pokemon?limit=${LIMIT}&offset=${offset}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch Pokemon list');
-    }
-    const data: PokemonListResponse = await response.json();
 
-    // Fetch detailed data for each Pokemon
-    const detailedPokemons = await Promise.all(
-      data.results.map(async (pokemon) => {
-        const detailResponse = await fetch(pokemon.url);
-        return detailResponse.json();
-      })
-    );
+    const data = await sdk.GetPokemonList({
+      limit: LIMIT,
+      offset: offset,
+    });
+
+    const pokemons = data.pokemon_v2_pokemon.map(transformPokemon);
 
     return {
-      pokemons: detailedPokemons,
-      hasMore: data.next !== null,
-      total: data.count,
+      pokemons,
+      hasMore: data.pokemon_v2_pokemon.length === LIMIT,
+      total: data.pokemon_v2_pokemon_aggregate.aggregate?.count || 0,
       page,
     };
   }
 );
 
-// Async thunk for fetching a single Pokemon by ID or name
+// Async thunk for fetching a single Pokemon by ID or name using GraphQL
 export const fetchPokemonById = createAsyncThunk(
   'pokemon/fetchPokemonById',
   async (idOrName: string | number) => {
-    const response = await fetch(`${POKEMON_API_BASE}/pokemon/${idOrName}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch Pokemon details');
+    let data;
+
+    if (typeof idOrName === 'number') {
+      // Fetch by ID
+      data = await sdk.GetPokemonById({ id: idOrName });
+      if (!data.pokemon_v2_pokemon_by_pk) {
+        throw new Error('Failed to fetch Pokemon details');
+      }
+      return transformPokemon(data.pokemon_v2_pokemon_by_pk);
+    } else {
+      // Fetch by name
+      data = await sdk.GetPokemonByName({ name: idOrName.toLowerCase() });
+      if (!data.pokemon_v2_pokemon || data.pokemon_v2_pokemon.length === 0) {
+        throw new Error('Failed to fetch Pokemon details');
+      }
+      return transformPokemon(data.pokemon_v2_pokemon[0]);
     }
-    const data: Pokemon = await response.json();
-    return data;
   }
 );
 
-// Async thunk for searching Pokemon by name
+// Async thunk for searching Pokemon by name using GraphQL
 export const searchPokemon = createAsyncThunk(
   'pokemon/searchPokemon',
   async (searchTerm: string) => {
-    const response = await fetch(`${POKEMON_API_BASE}/pokemon/${searchTerm.toLowerCase()}`);
-    if (!response.ok) {
+    // Add % wildcards for partial matching
+    const pattern = `%${searchTerm.toLowerCase()}%`;
+    const data = await sdk.SearchPokemon({ searchTerm: pattern });
+    
+    if (!data.pokemon_v2_pokemon || data.pokemon_v2_pokemon.length === 0) {
       throw new Error('Pokemon not found');
     }
-    const data: Pokemon = await response.json();
-    return data;
+    
+    // Return array of matching Pokemon
+    return data.pokemon_v2_pokemon.map(transformPokemon);
   }
 );
 
@@ -130,7 +183,7 @@ export const pokemonSlice = createSlice({
       })
       .addCase(searchPokemon.fulfilled, (state, action) => {
         state.loading = false;
-        state.pokemons = [action.payload];
+        state.pokemons = action.payload;
         state.hasMore = false;
       })
       .addCase(searchPokemon.rejected, (state, action) => {

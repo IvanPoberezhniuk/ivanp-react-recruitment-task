@@ -1,0 +1,22 @@
+overwrite: true
+schema: https://beta.pokeapi.co/graphql/v1beta
+documents: 'src/graphql/**/*.graphql'
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request
+    config:
+      fetcher: graphql-request
+      rawRequest: false
+      skipTypename: false
+      avoidOptionals: false
+      maybeValue: T | null
+      scalars:
+        timestamptz: string
+        uuid: string
+        jsonb: any
+        numeric: number
+        bigint: number
+

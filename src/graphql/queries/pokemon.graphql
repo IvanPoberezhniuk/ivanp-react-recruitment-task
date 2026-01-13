@@ -1,0 +1,49 @@
+#import "../fragments/pokemonFields.graphql"
+
+# Query to fetch a paginated list of Pokemon
+query GetPokemonList($limit: Int!, $offset: Int!) {
+  pokemon_v2_pokemon(limit: $limit, offset: $offset, order_by: { id: asc }) {
+    ...PokemonBasicFields
+    ...PokemonTypeFields
+  }
+  pokemon_v2_pokemon_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+
+# Query to fetch a single Pokemon by ID
+query GetPokemonById($id: Int!) {
+  pokemon_v2_pokemon_by_pk(id: $id) {
+    ...PokemonBasicFields
+    ...PokemonTypeFields
+    ...PokemonStatsFields
+    ...PokemonAbilitiesFields
+    ...PokemonSpeciesFields
+  }
+}
+
+# Query to fetch a single Pokemon by name
+query GetPokemonByName($name: String!) {
+  pokemon_v2_pokemon(where: { name: { _eq: $name } }, limit: 1) {
+    ...PokemonBasicFields
+    ...PokemonTypeFields
+    ...PokemonStatsFields
+    ...PokemonAbilitiesFields
+    ...PokemonSpeciesFields
+  }
+}
+
+# Query to search Pokemon by partial name
+query SearchPokemon($searchTerm: String!) {
+  pokemon_v2_pokemon(
+    where: { name: { _ilike: $searchTerm } }
+    order_by: { id: asc }
+    limit: 20
+  ) {
+    ...PokemonBasicFields
+    ...PokemonTypeFields
+  }
+}
+

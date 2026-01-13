@@ -1,0 +1,52 @@
+# Basic Pokemon fields used across queries
+fragment PokemonBasicFields on pokemon_v2_pokemon {
+  id
+  name
+  height
+  weight
+  base_experience
+}
+
+# Pokemon type information
+fragment PokemonTypeFields on pokemon_v2_pokemon {
+  pokemon_v2_pokemontypes {
+    pokemon_v2_type {
+      id
+      name
+    }
+  }
+}
+
+# Pokemon stats information
+fragment PokemonStatsFields on pokemon_v2_pokemon {
+  pokemon_v2_pokemonstats {
+    base_stat
+    effort
+    pokemon_v2_stat {
+      id
+      name
+    }
+  }
+}
+
+# Pokemon abilities information
+fragment PokemonAbilitiesFields on pokemon_v2_pokemon {
+  pokemon_v2_pokemonabilities {
+    is_hidden
+    slot
+    pokemon_v2_ability {
+      id
+      name
+    }
+  }
+}
+
+# Pokemon species information
+fragment PokemonSpeciesFields on pokemon_v2_pokemon {
+  pokemon_v2_pokemonspecy {
+    id
+    name
+    evolution_chain_id
+  }
+}
+
