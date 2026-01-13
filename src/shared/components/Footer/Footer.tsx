@@ -30,6 +30,7 @@ const styles: StylesObject = {
     borderColor: "divider",
     py: 4,
     mt: "auto",
+    minHeight: "280px", // Reserve space to prevent layout shift
   },
   container: {
     display: "flex",

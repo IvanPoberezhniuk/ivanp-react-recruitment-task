@@ -20,6 +20,7 @@ const styles: StylesObject = {
     flex: 1,
     display: "flex",
     flexDirection: "column",
+    minHeight: "calc(100vh - 64px - 280px)", // viewport - header - footer (prevents layout shift)
   },
 };
 
