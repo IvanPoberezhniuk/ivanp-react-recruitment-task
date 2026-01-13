@@ -41,6 +41,7 @@ import {
   GENERATION_RANGES,
 } from "../../utils/pokemonUtils";
 import { TYPE_COLORS } from "../../theme/theme";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 // Styles constant
 const styles: StylesObject = {
@@ -229,6 +230,8 @@ const styles: StylesObject = {
 const ITEMS_PER_PAGE = 20;
 
 export const PokemonList: React.FC = () => {
+  usePageTitle('Pokémon List');
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();

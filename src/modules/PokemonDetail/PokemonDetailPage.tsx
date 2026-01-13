@@ -24,6 +24,7 @@ import {
   clearSelectedPokemon,
   fetchPokemonById,
 } from "../../store/slices/pokemonSlice";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 import { PokemonHeader } from "./components/PokemonHeader";
 import { PokemonImageSection } from "./components/PokemonImageSection";
@@ -41,6 +42,13 @@ export const PokemonDetailPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selectedPokemon, loading } = useAppSelector(
     (state) => state.pokemon
+  );
+
+  // Set page title based on Pokemon name
+  usePageTitle(
+    selectedPokemon
+      ? `${selectedPokemon.name.charAt(0).toUpperCase() + selectedPokemon.name.slice(1)} #${selectedPokemon.id}`
+      : 'Loading...'
   );
 
   const [showShiny, setShowShiny] = useState(false);
