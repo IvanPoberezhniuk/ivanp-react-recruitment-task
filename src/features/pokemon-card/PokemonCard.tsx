@@ -111,6 +111,9 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({ pokemon, onClick }) =>
             image={imageUrl}
             alt={pokemon.name}
             sx={styles.image}
+            loading="lazy"
+            width={200}
+            height={200}
           />
         </Box>
         <CardContent>

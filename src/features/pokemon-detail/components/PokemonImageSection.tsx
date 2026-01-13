@@ -47,6 +47,8 @@ export const PokemonImageSection: React.FC<PokemonImageSectionProps> = ({
             alt={pokemon.name}
             sx={styles.image}
             onClick={onImageClick}
+            width={280}
+            height={280}
           />
           <Box sx={styles.magnifierIcon} onClick={onImageClick}>
             <ZoomInIcon />

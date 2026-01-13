@@ -127,6 +127,9 @@ export const PokemonCardList: React.FC<PokemonCardListProps> = ({
             image={imageUrl}
             alt={pokemon.name}
             sx={styles.image}
+            loading="lazy"
+            width={120}
+            height={120}
           />
         </Box>
         <CardContent sx={styles.contentContainer}>
