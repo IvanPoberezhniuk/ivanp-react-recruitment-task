@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CloseIcon from "@mui/icons-material/Close";
@@ -6,7 +6,6 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Box,
-  Chip,
   Collapse,
   Divider,
   IconButton,
@@ -99,6 +98,7 @@ const styles: StylesObject = {
     mb: 0.5,
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     gap: 1,
   },
   featureDescription: {
@@ -165,14 +165,35 @@ export const FeatureList: React.FC<FeatureListProps> = ({
   onClose,
 }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const toggleExpand = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isOpen &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
   return (
     <Collapse in={isOpen} timeout={300}>
-      <Box sx={styles.container}>
+      <Box sx={styles.container} ref={containerRef}>
         <Paper sx={styles.paper} elevation={8}>
           <Box sx={styles.header}>
             <Box>
@@ -204,15 +225,7 @@ export const FeatureList: React.FC<FeatureListProps> = ({
                     <Box sx={styles.contentBox}>
                       <Typography sx={styles.featureTitle}>
                         {feature.title}
-                        <Chip
-                          label={isExpanded ? "Less" : "More"}
-                          size="small"
-                          variant="outlined"
-                          icon={
-                            isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />
-                          }
-                          sx={styles.titleChip}
-                        />
+                        {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                       </Typography>
 
                       <Typography sx={styles.featureDescription}>
