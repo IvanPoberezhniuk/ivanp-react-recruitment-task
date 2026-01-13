@@ -11,7 +11,6 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import ApiIcon from "@mui/icons-material/Api";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
 import { useAppDispatch } from "../../../store";
@@ -186,6 +185,13 @@ export const Footer: React.FC = () => {
             >
               <HomeIcon fontSize="small" />
               Home
+            </Link>
+            <Link
+              onClick={() => navigate("/highlights")}
+              sx={{ ...styles.link, cursor: "pointer" }}
+            >
+              <InfoIcon fontSize="small" />
+              Highlights
             </Link>
             <Link href="#about" sx={styles.link}>
               <InfoIcon fontSize="small" />

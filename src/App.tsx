@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
 import { PokemonListPage } from "./pages/PokemonListPage";
 import { PokemonDetailPage } from "./pages/PokemonDetailPage";
+import { HighlightsPage } from "./pages/HighlightsPage";
 import { Header } from "./shared/components/Header/Header";
 import { Footer } from "./shared/components/Footer/Footer";
 import { GlobalSnackbar } from "./shared/components/GlobalSnackbar";
@@ -29,6 +30,7 @@ export const App = () => {
       <Box component="main" sx={styles.main}>
         <Routes>
           <Route path="/" element={<PokemonListPage />} />
+          <Route path="/highlights" element={<HighlightsPage />} />
           <Route path="/:id" element={<PokemonDetailPage />} />
         </Routes>
       </Box>

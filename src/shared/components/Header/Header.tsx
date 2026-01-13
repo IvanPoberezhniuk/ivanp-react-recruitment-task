@@ -94,6 +94,10 @@ export const Header: React.FC = () => {
     navigate("/");
   };
 
+  const handleHighlightsClick = () => {
+    navigate("/highlights");
+  };
+
   const handleGitHubClick = () => {
     window.open("https://github.com/PokeAPI/pokeapi", "_blank", "noopener,noreferrer");
   };
@@ -131,6 +135,14 @@ export const Header: React.FC = () => {
                 Browse All
               </Button>
             )}
+
+            {/* Highlights Link */}
+            <Button
+              onClick={handleHighlightsClick}
+              sx={styles.navButton}
+            >
+              Highlights
+            </Button>
 
             {/* GitHub Link */}
             <Tooltip title="View on GitHub">

@@ -1,0 +1,2 @@
+export { HighlightsPage } from './HighlightsPage';
+
